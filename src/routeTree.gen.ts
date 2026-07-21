@@ -9,36 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as HeritageRouteImport } from './routes/heritage'
-import { Route as EnquireRouteImport } from './routes/enquire'
-import { Route as CraftsmanshipRouteImport } from './routes/craftsmanship'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as JournalIndexRouteImport } from './routes/journal.index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CraftsmanshipRouteImport } from './routes/craftsmanship'
+import { Route as EnquireRouteImport } from './routes/enquire'
+import { Route as HeritageRouteImport } from './routes/heritage'
 import { Route as CollectionsIndexRouteImport } from './routes/collections.index'
-import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
-import { Route as JournalSlugRouteImport } from './routes/journal.$slug'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
+import { Route as JournalIndexRouteImport } from './routes/journal.index'
+import { Route as JournalSlugRouteImport } from './routes/journal.$slug'
+import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 
-const HeritageRoute = HeritageRouteImport.update({
-  id: '/heritage',
-  path: '/heritage',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EnquireRoute = EnquireRouteImport.update({
-  id: '/enquire',
-  path: '/enquire',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CraftsmanshipRoute = CraftsmanshipRouteImport.update({
-  id: '/craftsmanship',
-  path: '/craftsmanship',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -46,14 +31,24 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const JournalIndexRoute = JournalIndexRouteImport.update({
-  id: '/journal/',
-  path: '/journal/',
+const CraftsmanshipRoute = CraftsmanshipRouteImport.update({
+  id: '/craftsmanship',
+  path: '/craftsmanship',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnquireRoute = EnquireRouteImport.update({
+  id: '/enquire',
+  path: '/enquire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HeritageRoute = HeritageRouteImport.update({
+  id: '/heritage',
+  path: '/heritage',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollectionsIndexRoute = CollectionsIndexRouteImport.update({
@@ -61,9 +56,14 @@ const CollectionsIndexRoute = CollectionsIndexRouteImport.update({
   path: '/collections/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsSlugRoute = ProductsSlugRouteImport.update({
-  id: '/products/$slug',
-  path: '/products/$slug',
+const CollectionsSlugRoute = CollectionsSlugRouteImport.update({
+  id: '/collections/$slug',
+  path: '/collections/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalIndexRoute = JournalIndexRouteImport.update({
+  id: '/journal/',
+  path: '/journal/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JournalSlugRoute = JournalSlugRouteImport.update({
@@ -71,9 +71,9 @@ const JournalSlugRoute = JournalSlugRouteImport.update({
   path: '/journal/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CollectionsSlugRoute = CollectionsSlugRouteImport.update({
-  id: '/collections/$slug',
-  path: '/collections/$slug',
+const ProductsSlugRoute = ProductsSlugRouteImport.update({
+  id: '/products/$slug',
+  path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -175,32 +175,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/heritage': {
-      id: '/heritage'
-      path: '/heritage'
-      fullPath: '/heritage'
-      preLoaderRoute: typeof HeritageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/enquire': {
-      id: '/enquire'
-      path: '/enquire'
-      fullPath: '/enquire'
-      preLoaderRoute: typeof EnquireRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/craftsmanship': {
-      id: '/craftsmanship'
-      path: '/craftsmanship'
-      fullPath: '/craftsmanship'
-      preLoaderRoute: typeof CraftsmanshipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -210,18 +189,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/journal/': {
-      id: '/journal/'
-      path: '/journal'
-      fullPath: '/journal/'
-      preLoaderRoute: typeof JournalIndexRouteImport
+    '/craftsmanship': {
+      id: '/craftsmanship'
+      path: '/craftsmanship'
+      fullPath: '/craftsmanship'
+      preLoaderRoute: typeof CraftsmanshipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enquire': {
+      id: '/enquire'
+      path: '/enquire'
+      fullPath: '/enquire'
+      preLoaderRoute: typeof EnquireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/heritage': {
+      id: '/heritage'
+      path: '/heritage'
+      fullPath: '/heritage'
+      preLoaderRoute: typeof HeritageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/collections/': {
@@ -231,11 +224,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/$slug': {
-      id: '/products/$slug'
-      path: '/products/$slug'
-      fullPath: '/products/$slug'
-      preLoaderRoute: typeof ProductsSlugRouteImport
+    '/collections/$slug': {
+      id: '/collections/$slug'
+      path: '/collections/$slug'
+      fullPath: '/collections/$slug'
+      preLoaderRoute: typeof CollectionsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/': {
+      id: '/journal/'
+      path: '/journal'
+      fullPath: '/journal/'
+      preLoaderRoute: typeof JournalIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journal/$slug': {
@@ -245,11 +245,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/collections/$slug': {
-      id: '/collections/$slug'
-      path: '/collections/$slug'
-      fullPath: '/collections/$slug'
-      preLoaderRoute: typeof CollectionsSlugRouteImport
+    '/products/$slug': {
+      id: '/products/$slug'
+      path: '/products/$slug'
+      fullPath: '/products/$slug'
+      preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -271,3 +271,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
