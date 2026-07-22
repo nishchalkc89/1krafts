@@ -23,7 +23,7 @@ export function LimitedCollection() {
                   <span className="italic brass-text">Sagun</span>
                   <span className="block">— the bridal chapter.</span>
                 </h2>
-                <p className="mt-6 md:mt-8 text-white/85 leading-relaxed text-base md:text-lg max-w-lg">
+                <p className="mt-6 md:mt-8 font-medium text-white leading-relaxed text-base md:text-lg max-w-lg">
                   Twelve numbered ensembles. Each built with the wearer's name stitched inside
                   the pallu. Available only by appointment at the Boudha atelier.
                 </p>

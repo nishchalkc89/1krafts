@@ -34,7 +34,7 @@ function JournalPost() {
           <Reveal>
             <div className="eyebrow">{p.category}</div>
             <h1 className="mt-6 display-lg italic font-light">{p.title}</h1>
-            <div className="mt-8 text-sm text-foreground/50 uppercase tracking-[0.24em]">
+            <div className="mt-8 text-sm text-[color:var(--sindoor)] uppercase tracking-[0.24em]">
               {p.author} · {new Date(p.publishedAt).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}
             </div>
           </Reveal>
@@ -48,10 +48,10 @@ function JournalPost() {
       <section className="px-6 md:px-10 py-24">
         <div className="mx-auto max-w-[720px]">
           <Reveal>
-            <p className="font-display text-3xl leading-snug text-foreground/85">{p.excerpt}</p>
+            <p className="font-display font-medium text-3xl leading-snug text-foreground">{p.excerpt}</p>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-10 text-foreground/70 leading-relaxed text-lg">{p.body}</p>
+            <p className="mt-10 font-medium text-foreground leading-relaxed text-lg">{p.body}</p>
           </Reveal>
           <div className="mt-16 border-t border-foreground/10 pt-8">
             <Link to="/journal" className="text-[0.72rem] uppercase tracking-[0.28em] gold-underline">

@@ -19,7 +19,7 @@ export function FeaturedCategories() {
                 Six studios. <span className="italic brass-text">One house.</span>
               </h2>
             </div>
-            <p className="max-w-sm text-[color:var(--walnut-soft)] leading-relaxed">
+            <p className="max-w-sm font-medium text-[color:var(--walnut-soft)] leading-relaxed">
               From the loom of Palpa to the filigree bench of Patan — each studio guards one craft, kept alive by one master and their hands.
             </p>
           </div>
@@ -66,7 +66,7 @@ export function FeaturedCategories() {
         <div className="mt-12 md:mt-20 flex justify-center">
           <Link
             to="/collections"
-            className="group inline-flex items-center gap-4 rounded-full border border-[color:var(--walnut)]/25 px-7 py-3.5 sm:px-8 sm:py-4 text-[0.7rem] uppercase tracking-[0.32em] text-[color:var(--walnut)]/80 transition-colors hover:border-[color:var(--brass)] hover:text-[color:var(--brass)]"
+            className="group inline-flex items-center gap-4 rounded-full border border-[color:var(--walnut)]/25 px-7 py-3.5 sm:px-8 sm:py-4 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[color:var(--walnut)] transition-colors hover:border-[color:var(--brass)] hover:text-[color:var(--brass)]"
           >
             All fourteen studios
             <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>

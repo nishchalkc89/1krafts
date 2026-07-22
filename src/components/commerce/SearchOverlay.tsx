@@ -1,16 +1,21 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { Search, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchOverlay } from "@/context/SearchContext";
 import { services } from "@/services";
 import type { Product } from "@/types";
 import { formatPrice } from "@/lib/format";
+import { useEscapeKey } from "@/hooks/use-escape-key";
+import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
 
 export function SearchOverlay() {
   const { open, setOpen } = useSearchOverlay();
   const [q, setQ] = useState("");
   const [results, setResults] = useState<Product[]>([]);
+
+  useEscapeKey(open, useCallback(() => setOpen(false), [setOpen]));
+  useBodyScrollLock(open);
 
   useEffect(() => {
     if (!open) setQ("");
@@ -52,10 +57,10 @@ export function SearchOverlay() {
                 placeholder="Search pieces, fabrics, occasions…"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                className="w-full bg-transparent font-display text-3xl md:text-5xl outline-none placeholder:text-foreground/30"
+                className="w-full bg-transparent font-display text-3xl md:text-5xl outline-none placeholder:text-foreground/50"
               />
             </div>
-            <div className="mt-8 flex flex-wrap gap-2 text-xs uppercase tracking-[0.24em] text-foreground/60">
+            <div className="mt-8 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-foreground">
               {suggestions.map((s) => (
                 <button key={s} onClick={() => setQ(s)} className="rounded-full border border-foreground/15 px-4 py-2 hover:border-foreground">
                   {s}
@@ -64,7 +69,7 @@ export function SearchOverlay() {
             </div>
             <div className="mt-10 flex-1 overflow-y-auto">
               {results.length === 0 && q.trim() ? (
-                <div className="text-foreground/50">No pieces match "{q}".</div>
+                <div className="font-medium text-foreground">No pieces match "{q}".</div>
               ) : (
                 <ul className="grid gap-x-6 gap-y-4 md:grid-cols-2">
                   {results.map((p) => (
@@ -78,7 +83,7 @@ export function SearchOverlay() {
                         <img src={p.images[0].src} alt={p.name} className="h-24 w-20 object-cover" />
                         <div className="flex flex-1 flex-col">
                           <span className="font-display text-xl">{p.name}</span>
-                          <span className="text-xs text-foreground/50 uppercase tracking-[0.24em]">{p.categorySlug}</span>
+                          <span className="text-xs font-semibold text-foreground uppercase tracking-[0.24em]">{p.categorySlug}</span>
                           <span className="mt-auto text-sm">{formatPrice(p.price, p.currency)}</span>
                         </div>
                       </Link>

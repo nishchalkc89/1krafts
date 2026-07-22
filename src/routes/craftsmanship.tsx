@@ -34,9 +34,9 @@ function Craft() {
         </Parallax>
         <div className="relative z-10 mx-auto flex h-full max-w-[1680px] flex-col justify-end px-6 md:px-10 pb-24">
           <Reveal>
-            <div className="eyebrow text-[color:var(--ivory)]/70">The Atelier</div>
+            <div className="eyebrow text-[color:var(--ivory)]">The Atelier</div>
             <h1 className="mt-6 display-xl max-w-4xl italic font-light">Forty-two days.</h1>
-            <p className="mt-6 max-w-lg text-[color:var(--ivory)]/70">The time it takes to make a single saree. Not a minute less.</p>
+            <p className="mt-6 max-w-lg font-medium text-[color:var(--ivory)]">The time it takes to make a single saree. Not a minute less.</p>
           </Reveal>
         </div>
       </section>
@@ -49,7 +49,7 @@ function Craft() {
                 <div className="font-display text-6xl text-[color:var(--gold)]">{n.k}</div>
                 <div>
                   <h3 className="display-md">{n.h}</h3>
-                  <p className="mt-6 max-w-2xl text-foreground/70 leading-relaxed">{n.body}</p>
+                  <p className="mt-6 max-w-2xl font-medium text-foreground leading-relaxed">{n.body}</p>
                 </div>
               </article>
             </Reveal>
@@ -64,7 +64,7 @@ function Craft() {
             <div className="max-w-md">
               <div className="eyebrow">The signature</div>
               <h3 className="mt-6 display-md">Every piece is signed inside.</h3>
-              <p className="mt-8 text-foreground/70 leading-relaxed">
+              <p className="mt-8 font-medium text-foreground leading-relaxed">
                 On the inside seam of every 1KRAFTS piece, the maker's name is stitched by hand. When you own one of ours, you know exactly whose hours are folded into it.
               </p>
             </div>

@@ -1,13 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { useCallback } from "react";
 import { useWishlist } from "@/context/WishlistContext";
 import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/lib/format";
+import { useEscapeKey } from "@/hooks/use-escape-key";
+import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
 
 export function WishlistDrawer() {
   const { open, setOpen, ids, toggle } = useWishlist();
   const items = PRODUCTS.filter((p) => ids.includes(p.id));
+
+  useEscapeKey(open, useCallback(() => setOpen(false), [setOpen]));
+  useBodyScrollLock(open);
 
   return (
     <AnimatePresence>
@@ -36,10 +42,10 @@ export function WishlistDrawer() {
             </div>
             <div className="flex-1 overflow-y-auto px-8 py-6">
               {items.length === 0 ? (
-                <div className="mt-24 text-center text-foreground/60">
+                <div className="mt-24 text-center text-foreground">
                   <Heart className="mx-auto mb-4" />
                   <div className="font-display text-2xl text-foreground">No pieces yet</div>
-                  <p className="mt-2 text-sm">Save pieces you'd like to hear more about.</p>
+                  <p className="mt-2 text-sm font-medium">Save pieces you'd like to hear more about.</p>
                 </div>
               ) : (
                 <ul className="divide-y divide-foreground/10">
@@ -50,8 +56,8 @@ export function WishlistDrawer() {
                         <Link to="/products/$slug" params={{ slug: p.slug }} onClick={() => setOpen(false)} className="font-display text-lg">
                           {p.name}
                         </Link>
-                        <div className="mt-1 text-xs text-foreground/60">{formatPrice(p.price, p.currency)}</div>
-                        <button onClick={() => toggle(p.id)} className="mt-auto self-start text-[10px] uppercase tracking-[0.24em] text-foreground/60 hover:text-foreground">
+                        <div className="mt-1 text-xs font-semibold text-foreground">{formatPrice(p.price, p.currency)}</div>
+                        <button onClick={() => toggle(p.id)} className="mt-auto self-start text-[10px] font-semibold uppercase tracking-[0.24em] text-[color:var(--sindoor)] hover:text-foreground">
                           Remove
                         </button>
                       </div>

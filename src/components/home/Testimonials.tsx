@@ -25,7 +25,7 @@ export function Testimonials() {
                   <span className="mr-2 font-display text-4xl text-[color:var(--brass)] leading-none">"</span>
                   {t.quote}
                 </blockquote>
-                <figcaption className="mt-8 md:mt-12 text-[0.7rem] uppercase tracking-[0.32em] text-[color:var(--walnut-soft)]">
+                <figcaption className="mt-8 md:mt-12 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[color:var(--walnut-soft)]">
                   <span className="text-[color:var(--brass)]">{t.name}</span> · {t.location}
                 </figcaption>
               </figure>

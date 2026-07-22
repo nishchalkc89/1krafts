@@ -29,7 +29,7 @@ export function Heritage() {
                 <span className="block italic brass-text">at the foot</span>
                 of a very old mountain.
               </h2>
-              <p className="mt-6 md:mt-10 text-[color:var(--walnut-soft)] leading-relaxed text-base md:text-lg">
+              <p className="mt-6 md:mt-10 font-medium text-[color:var(--walnut-soft)] leading-relaxed text-base md:text-lg">
                 1KRAFTS was founded to keep the vanishing crafts of the valley alive —
                 the pit-loom of Palpa, the filigree bench of Patan, the wool-spinning of Mustang.
                 Every piece is signed by the hands that made it.

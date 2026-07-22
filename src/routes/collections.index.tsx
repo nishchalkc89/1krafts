@@ -48,13 +48,13 @@ function CollectionsIndex() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--ink)]/50 via-transparent to-transparent" />
                   <div className="absolute inset-x-6 bottom-6 flex items-end justify-between text-[color:var(--ivory)]">
                     <div>
-                      <div className="eyebrow text-[color:var(--ivory)]/70">{c.tagline}</div>
+                      <div className="eyebrow text-[color:var(--ivory)]">{c.tagline}</div>
                       <div className="mt-2 font-display text-3xl">{c.name}</div>
                     </div>
                     <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
                   </div>
                 </div>
-                <p className="mt-4 text-sm text-foreground/60 max-w-md">{c.description}</p>
+                <p className="mt-4 text-sm font-medium text-foreground max-w-md">{c.description}</p>
               </Link>
             </motion.div>
           ))}

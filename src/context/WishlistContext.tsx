@@ -41,7 +41,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({ ids, has, toggle, open, setOpen, count: ids.length }),
-    [ids, has, open],
+    [ids, has, toggle, open],
   );
   return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 }

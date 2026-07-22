@@ -52,7 +52,7 @@ function Contact() {
                 <li className="flex justify-between border-b border-foreground/10 pb-2"><span>Sunday — Friday</span><span>10 : 00 — 19 : 00</span></li>
                 <li className="flex justify-between border-b border-foreground/10 pb-2"><span>Saturday</span><span>By appointment</span></li>
               </ul>
-              <p className="mt-8 text-sm text-foreground/60">
+              <p className="mt-8 text-sm font-medium text-foreground">
                 Private appointments for bridal and made-to-measure are held on Saturdays at the Boudha atelier. Please write ahead.
               </p>
             </div>
@@ -66,9 +66,9 @@ function Contact() {
 function Row({ icon, k, v }: { icon: React.ReactNode; k: string; v: string }) {
   return (
     <div className="flex items-start gap-4 border-b border-foreground/10 pb-6">
-      <span className="mt-0.5 text-foreground/50">{icon}</span>
+      <span className="mt-0.5 text-[color:var(--sindoor)]">{icon}</span>
       <div>
-        <div className="eyebrow text-foreground/50">{k}</div>
+        <div className="eyebrow text-[color:var(--sindoor)]">{k}</div>
         <div className="mt-1 font-display text-2xl">{v}</div>
       </div>
     </div>

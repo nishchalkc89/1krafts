@@ -26,7 +26,7 @@ function About() {
         </Reveal>
         <Divider className="my-16" />
         <Reveal delay={0.1}>
-          <div className="space-y-6 font-display text-2xl leading-snug text-foreground/85">
+          <div className="space-y-6 font-display font-medium text-2xl leading-snug text-foreground">
             <p>1KRAFTS is a Kathmandu-based heritage house founded in 2018.</p>
             <p>We work with twenty-nine master artisans across Nepal, on saree, pashmina, dhaka, jewellery, footwear, and homeware.</p>
             <p>We keep the atelier small on purpose. Small enough that every piece can pass through the hands of the person who signed it.</p>

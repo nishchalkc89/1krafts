@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid gap-12 md:gap-16 sm:grid-cols-2 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div>
             <Logo variant="full" />
-            <p className="mt-6 max-w-sm font-display text-xl md:text-2xl leading-tight text-[color:var(--walnut)]/85">
+            <p className="mt-6 max-w-sm font-display font-medium text-xl md:text-2xl leading-tight text-[color:var(--walnut)]">
               A Nepali heritage house. Slow-made, considered, kept alive by hand.
             </p>
           </div>
@@ -43,7 +43,7 @@ export function Footer() {
           </FooterCol>
         </div>
         <Divider className="mt-16 md:mt-20 text-[color:var(--walnut)]/25" />
-        <div className="mt-6 flex flex-col items-center justify-center gap-3 text-center text-[11px] uppercase tracking-[0.28em] text-[color:var(--walnut)]/60">
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-[color:var(--walnut)]">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <Link to="/about" className="hover:text-[color:var(--walnut)]">The House</Link>
             <a href="#" className="hover:text-[color:var(--walnut)]">Privacy</a>
@@ -60,7 +60,7 @@ function FooterCol({ title, children }: { title: string; children: React.ReactNo
   return (
     <div>
       <div className="eyebrow">{title}</div>
-      <div className="mt-6 flex flex-col gap-3 text-sm text-[color:var(--walnut)]/85">{children}</div>
+      <div className="mt-6 flex flex-col gap-3 text-sm font-medium text-[color:var(--walnut)]">{children}</div>
     </div>
   );
 }

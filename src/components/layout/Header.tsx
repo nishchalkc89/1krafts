@@ -1,9 +1,13 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { Instagram, Mail, Menu, Phone, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Heart, Instagram, Mail, Menu, Phone, Search, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { CATEGORIES } from "@/data/categories";
+import { useSearchOverlay } from "@/context/SearchContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
+import { useEscapeKey } from "@/hooks/use-escape-key";
 
 const NAV = [
   { label: "Collections", to: "/collections" },
@@ -17,8 +21,12 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
+  const [headerH, setHeaderH] = useState(64);
+  const headerRef = useRef<HTMLElement>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
+  const search = useSearchOverlay();
+  const wishlist = useWishlist();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -32,8 +40,28 @@ export function Header() {
     setMegaOpen(false);
   }, [pathname]);
 
+  // Lock background scroll while the mobile drawer is open — otherwise the page
+  // underneath can scroll during the gesture and the drawer's positioning (tied to
+  // the header's live height) fights with it, letting page content show through.
+  useBodyScrollLock(menuOpen);
+  useEscapeKey(menuOpen, () => setMenuOpen(false));
+  useEscapeKey(megaOpen, () => setMegaOpen(false));
+
+  // The header's height changes with scroll state, route, and logo size — measure
+  // it directly instead of hardcoding an offset for the mobile drawer below it.
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const update = () => setHeaderH(el.offsetHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [scrolled, isHome]);
+
   return (
     <header
+      ref={headerRef}
       className={
         "fixed inset-x-0 top-0 z-50 transition-[background,backdrop-filter,color,padding] duration-500 " +
         (scrolled || !isHome
@@ -41,9 +69,13 @@ export function Header() {
           : "py-5 md:py-6 bg-gradient-to-b from-[color:var(--linen)]/80 to-transparent")
       }
     >
-      <div className="flex items-center gap-6 md:gap-10 px-5 sm:px-6 md:px-10">
-        <Logo />
-        <nav className="hidden md:flex ml-auto items-center gap-8 text-[0.72rem] uppercase tracking-[0.28em] text-[color:var(--walnut)]/70">
+      <div className="flex items-center justify-between px-5 sm:px-6 md:px-10">
+        <div className="flex items-center">
+          <Logo />
+        </div>
+
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-6">
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--sindoor)]">
             <button
               onMouseEnter={() => setMegaOpen(true)}
               className="gold-underline hover:text-[color:var(--brass)]"
@@ -61,13 +93,36 @@ export function Header() {
               </Link>
             ))}
           </nav>
-        <button
-          aria-label="Menu"
-          className="ml-auto grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/25 text-[color:var(--walnut)] hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors md:hidden"
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          {menuOpen ? <X size={16} /> : <Menu size={16} />}
-        </button>
+
+          <div className="flex items-center gap-2">
+            <button
+              aria-label="Search"
+              className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/25 text-[color:var(--walnut)] hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors"
+              onClick={() => search.setOpen(true)}
+            >
+              <Search size={16} />
+            </button>
+            <button
+              aria-label="Wishlist"
+              className="relative grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/25 text-[color:var(--walnut)] hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors"
+              onClick={() => wishlist.setOpen(true)}
+            >
+              <Heart size={16} fill={wishlist.count > 0 ? "currentColor" : "none"} />
+              {wishlist.count > 0 && (
+                <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-[color:var(--sindoor)] text-[9px] font-semibold text-white">
+                  {wishlist.count}
+                </span>
+              )}
+            </button>
+            <button
+              aria-label="Menu"
+              className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/25 text-[color:var(--walnut)] hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors md:hidden"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? <X size={16} /> : <Menu size={16} />}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Mega menu */}
@@ -90,7 +145,7 @@ export function Header() {
                   className="group flex items-baseline justify-between border-b border-transparent hover:border-[color:var(--brass)]/50 py-2 transition-colors"
                 >
                   <span className="font-display italic text-xl group-hover:text-[color:var(--brass)] transition-colors">{c.name}</span>
-                  <span className="text-[10px] uppercase tracking-[0.28em] text-[color:var(--walnut-soft)]/70 group-hover:text-[color:var(--walnut)]">
+                  <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--sindoor)] group-hover:text-[color:var(--walnut)]">
                     {c.tagline}
                   </span>
                 </Link>
@@ -107,24 +162,25 @@ export function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="md:hidden fixed inset-x-0 top-[64px] bottom-0 z-40 bg-[color:var(--linen)] text-[color:var(--walnut)] px-6 pt-6 pb-10 overflow-y-auto shadow-2xl"
+            style={{ top: headerH }}
+            className="md:hidden fixed inset-x-0 bottom-0 z-40 bg-[color:var(--linen)] text-[color:var(--walnut)] px-6 pt-6 pb-10 overflow-y-auto shadow-2xl"
           >
             <nav className="flex flex-col divide-y divide-[color:var(--walnut)]/15">
               {NAV.slice(1).map((n) => (
-                <Link key={n.to} to={n.to} className="py-4 font-display italic text-2xl hover:text-[color:var(--brass)] transition-colors">
+                <Link key={n.to} to={n.to} className="py-4 font-display font-semibold italic text-2xl text-[color:var(--walnut)] hover:text-[color:var(--brass)] transition-colors">
                   {n.label}
                 </Link>
               ))}
             </nav>
             <div className="mt-6 border-t border-[color:var(--walnut)]/15 pt-5">
-              <div className="text-[10px] uppercase tracking-[0.28em] text-[color:var(--walnut)]/50 mb-4">Collections</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--sindoor)] mb-4">Collections</div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
                 {CATEGORIES.map((c) => (
                   <Link
                     key={c.slug}
                     to="/collections/$slug"
                     params={{ slug: c.slug }}
-                    className="font-display italic text-base hover:text-[color:var(--brass)] transition-colors"
+                    className="font-display font-semibold italic text-base text-[color:var(--walnut)] hover:text-[color:var(--brass)] transition-colors"
                   >
                     {c.name}
                   </Link>
@@ -132,7 +188,7 @@ export function Header() {
               </div>
             </div>
             <div className="mt-8 border-t border-[color:var(--walnut)]/15 pt-6">
-              <div className="text-[10px] uppercase tracking-[0.28em] text-[color:var(--walnut)]/50 mb-4">Reach us</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--sindoor)] mb-4">Reach us</div>
               <div className="flex items-center gap-3">
                 <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/25 hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors">
                   <Instagram size={16} />

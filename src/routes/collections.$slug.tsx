@@ -55,14 +55,14 @@ function CollectionPage() {
           <Reveal>
             <div className="eyebrow">{category?.tagline}</div>
             <h1 className="mt-6 display-xl">{category?.name}</h1>
-            <p className="mt-6 max-w-xl text-foreground/60">{category?.description}</p>
+            <p className="mt-6 max-w-xl font-medium text-foreground">{category?.description}</p>
           </Reveal>
         </div>
       </section>
       <Divider className="mx-6 md:mx-10" />
       <section className="px-6 md:px-10 py-16">
         <div className="mx-auto max-w-[1680px]">
-          <div className="mb-10 flex flex-col gap-4 text-[11px] uppercase tracking-[0.24em] text-foreground/60 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-10 flex flex-col gap-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground sm:flex-row sm:items-center sm:justify-between">
             <div>{page.total} pieces</div>
             <div className="flex items-center gap-3 overflow-x-auto -mx-1 px-1 sm:overflow-visible">
               <span className="shrink-0">Sort</span>
@@ -86,7 +86,7 @@ function CollectionPage() {
           {items.length > 0 ? (
             <ProductGrid products={items} />
           ) : (
-            <div className="rounded-sm border border-foreground/10 bg-[color:var(--cream)] py-32 text-center text-foreground/60">
+            <div className="rounded-sm border border-foreground/10 bg-[color:var(--cream)] py-32 text-center font-medium text-foreground">
               This chapter is being loomed. Please check back soon.
             </div>
           )}

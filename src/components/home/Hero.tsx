@@ -51,7 +51,7 @@ export function Hero() {
             </Link>
             <Link
               to="/heritage"
-              className="group inline-flex items-center gap-3 border-b border-[color:var(--walnut)]/30 pb-2 text-[0.7rem] uppercase tracking-[0.32em] text-[color:var(--walnut)]/80 hover:text-[color:var(--walnut)] hover:border-[color:var(--walnut)]"
+              className="group inline-flex items-center gap-3 border-b border-[color:var(--walnut)]/30 pb-2 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[color:var(--walnut)] hover:text-[color:var(--brass)] hover:border-[color:var(--walnut)]"
             >
               Explore Heritage
               <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
@@ -85,7 +85,7 @@ export function Hero() {
           <span className="pointer-events-none absolute -top-3 -left-3 h-6 w-6 border-t border-l border-[color:var(--brass)]" />
           <span className="pointer-events-none absolute -bottom-3 -right-3 h-6 w-6 border-b border-r border-[color:var(--brass)]" />
           {/* Floating caption */}
-          <div className="absolute -bottom-8 left-4 right-4 flex items-end justify-between text-[color:var(--walnut)]/80">
+          <div className="absolute -bottom-8 left-4 right-4 flex items-end justify-between text-[color:var(--walnut)]">
             <div>
               <div className="number-tag">01 / 04</div>
               <div className="mt-2 font-display italic text-lg">Rakta — Banaras silk saree</div>
@@ -96,7 +96,7 @@ export function Hero() {
 
       {/* Bottom marquee band */}
       <div className="relative z-10 border-y border-[color:var(--walnut)]/10 overflow-hidden bg-[color:var(--parchment)]">
-        <div className="marquee flex whitespace-nowrap py-6 text-[color:var(--walnut)]/60">
+        <div className="marquee flex whitespace-nowrap py-6 text-[color:var(--walnut)]">
           {Array.from({ length: 2 }).map((_, group) => (
             <div key={group} className="flex items-center gap-10 sm:gap-16 pr-10 sm:pr-16 font-display text-2xl sm:text-3xl italic">
               {["Pashmina from Mustang", "Dhaka from Palpa", "Filigree from Patan", "Silk from Kathmandu", "Wool from the peaks"].map((w) => (
@@ -115,7 +115,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 1 }}
-        className="pointer-events-none hidden md:flex absolute bottom-24 right-6 md:right-10 z-10 flex-col items-center gap-3 text-[10px] uppercase tracking-[0.36em] text-[color:var(--walnut)]/50"
+        className="pointer-events-none hidden md:flex absolute bottom-24 right-6 md:right-10 z-10 flex-col items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.36em] text-[color:var(--walnut)]"
       >
         <span className="rotate-90 origin-center pl-4">Scroll</span>
         <div className="h-16 w-px bg-gradient-to-b from-[color:var(--brass)]/70 to-transparent" />

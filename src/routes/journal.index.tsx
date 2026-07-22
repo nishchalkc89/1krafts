@@ -37,9 +37,9 @@ function JournalIndex() {
                 <div className="aspect-[4/5] overflow-hidden">
                   <img src={p.cover} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-[1600ms] group-hover:scale-[1.05]" />
                 </div>
-                <div className="mt-5 eyebrow text-foreground/60">{p.category} · {new Date(p.publishedAt).toLocaleDateString("en", { month: "long", year: "numeric" })}</div>
+                <div className="mt-5 eyebrow text-[color:var(--sindoor)]">{p.category} · {new Date(p.publishedAt).toLocaleDateString("en", { month: "long", year: "numeric" })}</div>
                 <h2 className="mt-3 font-display text-3xl leading-tight">{p.title}</h2>
-                <p className="mt-3 text-foreground/60">{p.excerpt}</p>
+                <p className="mt-3 font-medium text-foreground">{p.excerpt}</p>
               </Link>
             </Reveal>
           ))}

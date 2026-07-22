@@ -18,7 +18,7 @@ export function NewArrivals({ title = "New Arrivals", eyebrow = "The Latest", pr
                 <span>{title.split(" ").slice(1).join(" ")}</span>
               </h2>
             </div>
-            <div className="max-w-xs text-sm text-[color:var(--walnut-soft)]">
+            <div className="max-w-xs text-sm font-medium text-[color:var(--walnut-soft)]">
               Numbered pieces, released each month. Each one hand-finished by a named artisan.
             </div>
           </div>

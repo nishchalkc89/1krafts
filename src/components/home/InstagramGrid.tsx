@@ -21,7 +21,7 @@ export function InstagramGrid() {
               </div>
               <h2 className="mt-6 display-lg"><span className="italic brass-text">In</span> the wild.</h2>
             </div>
-            <p className="max-w-xs text-[color:var(--walnut-soft)]">Pieces lived in — photographed by the people who love them.</p>
+            <p className="max-w-xs font-medium text-[color:var(--walnut-soft)]">Pieces lived in — photographed by the people who love them.</p>
           </div>
         </Reveal>
         <div className="mt-8 md:mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">

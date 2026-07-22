@@ -28,7 +28,7 @@ export function Craftsmanship() {
                 Slow-made.
                 <span className="block italic brass-text">Never fast.</span>
               </h2>
-              <p className="mt-6 md:mt-10 text-[color:var(--walnut-soft)] leading-relaxed text-base md:text-lg">
+              <p className="mt-6 md:mt-10 font-medium text-[color:var(--walnut-soft)] leading-relaxed text-base md:text-lg">
                 A Rakta saree takes forty-two days on the loom. A Sagun lehenga takes six months
                 between the atelier and the wearer. Twenty-nine master artisans, each named on
                 the piece they made.
@@ -57,7 +57,7 @@ function Stat({ n, label }: { n: string; label: string }) {
   return (
     <li className="border-t border-[color:var(--walnut)]/20 pt-4">
       <div className="font-display italic brass-text text-4xl md:text-6xl">{n}</div>
-      <div className="mt-3 text-[10px] uppercase tracking-[0.32em] text-[color:var(--walnut-soft)]">{label}</div>
+      <div className="mt-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[color:var(--walnut-soft)]">{label}</div>
     </li>
   );
 }

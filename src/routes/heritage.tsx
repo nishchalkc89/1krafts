@@ -30,7 +30,7 @@ function Heritage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--ink)]/40 via-transparent to-[color:var(--ink)]/60" />
         <div className="relative z-10 mx-auto flex h-full max-w-[1680px] flex-col justify-end px-6 md:px-10 pb-24">
           <Reveal>
-            <div className="eyebrow text-[color:var(--ivory)]/70">Chapter one</div>
+            <div className="eyebrow text-[color:var(--ivory)]">Chapter one</div>
             <h1 className="mt-6 display-xl max-w-4xl">A country of makers.</h1>
           </Reveal>
         </div>
@@ -40,10 +40,10 @@ function Heritage() {
         <div className="mx-auto grid max-w-[1200px] gap-16 md:grid-cols-[1fr_1.4fr]">
           <Reveal>
             <div className="eyebrow">Est. 2018 · Boudha</div>
-            <p className="mt-8 text-foreground/60">Kathmandu · Nepal</p>
+            <p className="mt-8 font-medium text-foreground">Kathmandu · Nepal</p>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="space-y-6 text-lg leading-relaxed text-foreground/85 font-display">
+            <div className="space-y-6 text-lg leading-relaxed font-medium text-foreground font-display">
               <p>1KRAFTS began with a saree. Then a loom. Then a name.</p>
               <p>
                 We are a small house, working with twenty-nine master artisans across
@@ -77,7 +77,7 @@ function Heritage() {
           <h2 className="display-lg">
             <span className="italic font-light">Nothing here</span> is machine-made.
           </h2>
-          <p className="mt-8 text-foreground/60 leading-relaxed">
+          <p className="mt-8 font-medium text-foreground leading-relaxed">
             Not a stitch, not a bead, not a border. If a piece cannot be made by
             hand, we do not make it.
           </p>

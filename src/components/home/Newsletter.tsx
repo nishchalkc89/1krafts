@@ -18,7 +18,7 @@ export function Newsletter() {
             Quiet <span className="italic brass-text">updates</span>
             <span className="block">from the atelier.</span>
           </h2>
-          <p className="mt-6 md:mt-8 text-[color:var(--walnut-soft)]">Four letters a year. New collections, small stories, private previews. No noise.</p>
+          <p className="mt-6 md:mt-8 font-medium text-[color:var(--walnut-soft)]">Four letters a year. New collections, small stories, private previews. No noise.</p>
           {done ? (
             <div className="mt-10 md:mt-14 inline-block rounded-2xl border border-[color:var(--brass)]/40 bg-white/60 backdrop-blur px-8 py-6 text-sm text-[color:var(--brass)]">
               Thank you. Look for the next letter shortly.
@@ -37,7 +37,7 @@ export function Newsletter() {
                 value={email}
                 onChange={(ev) => setEmail(ev.target.value)}
                 placeholder="your email address"
-                className="flex-1 min-w-0 bg-transparent py-4 text-base md:text-lg outline-none placeholder:text-[color:var(--walnut-soft)]/60 text-[color:var(--walnut)]"
+                className="flex-1 min-w-0 bg-transparent py-4 text-base md:text-lg outline-none placeholder:text-[color:var(--walnut-soft)]/80 text-[color:var(--walnut)]"
               />
               <button className="text-[0.7rem] uppercase tracking-[0.32em] text-[color:var(--brass)] hover:tracking-[0.36em] transition-all">
                 Subscribe →

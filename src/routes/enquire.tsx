@@ -29,7 +29,7 @@ function Enquire() {
         <Reveal>
           <div className="eyebrow">One conversation</div>
           <h1 className="mt-6 display-xl italic font-light">Write to the atelier.</h1>
-          <p className="mt-8 text-foreground/60 max-w-xl mx-auto">
+          <p className="mt-8 font-medium text-foreground max-w-xl mx-auto">
             Every enquiry is read by a member of the atelier, personally. We aim to reply within 24 hours.
           </p>
           <button

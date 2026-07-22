@@ -3,11 +3,16 @@ import { Phone, X, Mail, MessageCircle, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useEnquiry } from "@/context/EnquiryContext";
 import { services } from "@/services";
+import { useEscapeKey } from "@/hooks/use-escape-key";
+import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
 
 export function EnquiryDrawer() {
   const { open, target, closeEnquiry } = useEnquiry();
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+
+  useEscapeKey(open, closeEnquiry);
+  useBodyScrollLock(open);
 
   useEffect(() => {
     if (!open) {
@@ -62,7 +67,7 @@ export function EnquiryDrawer() {
             <div className="flex-1 overflow-y-auto px-8 pb-10 pt-6">
               <h2 className="display-md">Speak with the atelier</h2>
               {target?.productName && (
-                <p className="mt-2 text-sm text-foreground/60">Enquiring about <span className="italic">{target.productName}</span></p>
+                <p className="mt-2 text-sm font-medium text-foreground">Enquiring about <span className="italic">{target.productName}</span></p>
               )}
 
               {state === "sent" ? (
@@ -71,7 +76,7 @@ export function EnquiryDrawer() {
                     <Check />
                   </div>
                   <div className="mt-4 font-display text-2xl">Thank you.</div>
-                  <p className="mt-2 text-sm text-foreground/60">
+                  <p className="mt-2 text-sm font-medium text-foreground">
                     A member of our atelier will reach out within 24 hours.
                   </p>
                 </div>
@@ -87,7 +92,7 @@ export function EnquiryDrawer() {
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       rows={5}
-                      className="mt-2 w-full resize-none border-b border-foreground/25 bg-transparent py-3 text-sm outline-none placeholder:text-foreground/30 focus:border-foreground"
+                      className="mt-2 w-full resize-none border-b border-foreground/25 bg-transparent py-3 text-sm outline-none placeholder:text-foreground/50 focus:border-foreground"
                       placeholder="Tell us about the piece or occasion"
                     />
                   </div>
@@ -106,15 +111,15 @@ export function EnquiryDrawer() {
                 <div className="flex flex-col gap-3">
                   <a href="https://wa.me/9779800000000" target="_blank" rel="noreferrer" className="group flex items-center justify-between border-b border-foreground/10 py-3">
                     <span className="flex items-center gap-3 text-sm"><MessageCircle size={16} /> WhatsApp</span>
-                    <span className="text-xs text-foreground/50 group-hover:text-foreground">+977 98 0000 0000 →</span>
+                    <span className="text-xs font-semibold text-foreground">+977 98 0000 0000 →</span>
                   </a>
                   <a href="tel:+9779800000000" className="group flex items-center justify-between border-b border-foreground/10 py-3">
                     <span className="flex items-center gap-3 text-sm"><Phone size={16} /> Call the atelier</span>
-                    <span className="text-xs text-foreground/50 group-hover:text-foreground">+977 98 0000 0000 →</span>
+                    <span className="text-xs font-semibold text-foreground">+977 98 0000 0000 →</span>
                   </a>
                   <a href="mailto:atelier@1krafts.com" className="group flex items-center justify-between py-3">
                     <span className="flex items-center gap-3 text-sm"><Mail size={16} /> Email</span>
-                    <span className="text-xs text-foreground/50 group-hover:text-foreground">atelier@1krafts.com →</span>
+                    <span className="text-xs font-semibold text-foreground">atelier@1krafts.com →</span>
                   </a>
                 </div>
               </div>

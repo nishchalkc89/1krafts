@@ -177,13 +177,13 @@ function ProductPage() {
                 </div>
               </div>
 
-              <p className="mt-4 text-xs uppercase tracking-[0.24em] text-foreground/50">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.24em] text-foreground">
                 Prices exclude taxes · SKU {p.sku}
               </p>
 
-              <p className="mt-8 max-w-lg text-foreground/70 leading-relaxed">{p.description}</p>
+              <p className="mt-8 max-w-lg font-medium text-foreground leading-relaxed">{p.description}</p>
               {p.story && (
-                <p className="mt-4 max-w-lg text-foreground/60 italic leading-relaxed">{p.story}</p>
+                <p className="mt-4 max-w-lg font-medium text-foreground italic leading-relaxed">{p.story}</p>
               )}
 
               <div className="mt-10 flex flex-wrap gap-3">
@@ -250,7 +250,7 @@ function ProductPage() {
               <div className="eyebrow">The Film</div>
               <h2 className="mt-4 display-md">In motion</h2>
             </div>
-            <p className="hidden md:block max-w-sm text-sm text-foreground/60 leading-relaxed">
+            <p className="hidden md:block max-w-sm text-sm font-medium text-foreground leading-relaxed">
               A short study of drape, hand, and light — filmed inside our Kathmandu atelier.
             </p>
           </div>
@@ -285,7 +285,7 @@ function ProductPage() {
 function SpecItem({ k, v }: { k: string; v: string }) {
   return (
     <div>
-      <dt className="eyebrow text-foreground/50">{k}</dt>
+      <dt className="eyebrow text-[color:var(--sindoor)]">{k}</dt>
       <dd className="mt-1 text-foreground">{v}</dd>
     </div>
   );
@@ -324,7 +324,7 @@ function ProductFilm({ poster, title }: { poster: string; title: string }) {
         </span>
       </button>
       <div className="pointer-events-none absolute bottom-6 left-6 md:bottom-8 md:left-10">
-        <div className="eyebrow text-[color:var(--ivory)]/70">Atelier Film · 00:42</div>
+        <div className="eyebrow text-[color:var(--ivory)]">Atelier Film · 00:42</div>
         <div className="mt-2 font-display italic text-2xl md:text-3xl text-[color:var(--ivory)]">{title}</div>
       </div>
     </div>
