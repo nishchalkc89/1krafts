@@ -15,11 +15,19 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CraftsmanshipRouteImport } from './routes/craftsmanship'
 import { Route as EnquireRouteImport } from './routes/enquire'
 import { Route as HeritageRouteImport } from './routes/heritage'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as CollectionsIndexRouteImport } from './routes/collections.index'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
 import { Route as JournalIndexRouteImport } from './routes/journal.index'
 import { Route as JournalSlugRouteImport } from './routes/journal.$slug'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as AdminCategoriesIndexRouteImport } from './routes/admin.categories.index'
+import { Route as AdminEnquiriesIndexRouteImport } from './routes/admin.enquiries.index'
+import { Route as AdminJournalIndexRouteImport } from './routes/admin.journal.index'
+import { Route as AdminProductsIndexRouteImport } from './routes/admin.products.index'
+import { Route as AdminProductsImportRouteImport } from './routes/admin.products.import'
+import { Route as AdminTestimonialsIndexRouteImport } from './routes/admin.testimonials.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -51,6 +59,16 @@ const HeritageRoute = HeritageRouteImport.update({
   path: '/heritage',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CollectionsIndexRoute = CollectionsIndexRouteImport.update({
   id: '/collections/',
   path: '/collections/',
@@ -76,6 +94,36 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
+  id: '/admin/categories/',
+  path: '/admin/categories/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminEnquiriesIndexRoute = AdminEnquiriesIndexRouteImport.update({
+  id: '/admin/enquiries/',
+  path: '/admin/enquiries/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminJournalIndexRoute = AdminJournalIndexRouteImport.update({
+  id: '/admin/journal/',
+  path: '/admin/journal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProductsIndexRoute = AdminProductsIndexRouteImport.update({
+  id: '/admin/products/',
+  path: '/admin/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProductsImportRoute = AdminProductsImportRouteImport.update({
+  id: '/admin/products/import',
+  path: '/admin/products/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTestimonialsIndexRoute = AdminTestimonialsIndexRouteImport.update({
+  id: '/admin/testimonials/',
+  path: '/admin/testimonials/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -84,11 +132,19 @@ export interface FileRoutesByFullPath {
   '/craftsmanship': typeof CraftsmanshipRoute
   '/enquire': typeof EnquireRoute
   '/heritage': typeof HeritageRoute
+  '/admin/login': typeof AdminLoginRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/collections/': typeof CollectionsIndexRoute
   '/journal/': typeof JournalIndexRoute
+  '/admin/products/import': typeof AdminProductsImportRoute
+  '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/admin/enquiries/': typeof AdminEnquiriesIndexRoute
+  '/admin/journal/': typeof AdminJournalIndexRoute
+  '/admin/products/': typeof AdminProductsIndexRoute
+  '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -97,11 +153,19 @@ export interface FileRoutesByTo {
   '/craftsmanship': typeof CraftsmanshipRoute
   '/enquire': typeof EnquireRoute
   '/heritage': typeof HeritageRoute
+  '/admin/login': typeof AdminLoginRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/collections': typeof CollectionsIndexRoute
   '/journal': typeof JournalIndexRoute
+  '/admin/products/import': typeof AdminProductsImportRoute
+  '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/enquiries': typeof AdminEnquiriesIndexRoute
+  '/admin/journal': typeof AdminJournalIndexRoute
+  '/admin/products': typeof AdminProductsIndexRoute
+  '/admin/testimonials': typeof AdminTestimonialsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -111,11 +175,19 @@ export interface FileRoutesById {
   '/craftsmanship': typeof CraftsmanshipRoute
   '/enquire': typeof EnquireRoute
   '/heritage': typeof HeritageRoute
+  '/admin/login': typeof AdminLoginRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/collections/': typeof CollectionsIndexRoute
   '/journal/': typeof JournalIndexRoute
+  '/admin/products/import': typeof AdminProductsImportRoute
+  '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/admin/enquiries/': typeof AdminEnquiriesIndexRoute
+  '/admin/journal/': typeof AdminJournalIndexRoute
+  '/admin/products/': typeof AdminProductsIndexRoute
+  '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -126,11 +198,19 @@ export interface FileRouteTypes {
     | '/craftsmanship'
     | '/enquire'
     | '/heritage'
+    | '/admin/login'
     | '/collections/$slug'
     | '/journal/$slug'
     | '/products/$slug'
+    | '/admin/'
     | '/collections/'
     | '/journal/'
+    | '/admin/products/import'
+    | '/admin/categories/'
+    | '/admin/enquiries/'
+    | '/admin/journal/'
+    | '/admin/products/'
+    | '/admin/testimonials/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,11 +219,19 @@ export interface FileRouteTypes {
     | '/craftsmanship'
     | '/enquire'
     | '/heritage'
+    | '/admin/login'
     | '/collections/$slug'
     | '/journal/$slug'
     | '/products/$slug'
+    | '/admin'
     | '/collections'
     | '/journal'
+    | '/admin/products/import'
+    | '/admin/categories'
+    | '/admin/enquiries'
+    | '/admin/journal'
+    | '/admin/products'
+    | '/admin/testimonials'
   id:
     | '__root__'
     | '/'
@@ -152,11 +240,19 @@ export interface FileRouteTypes {
     | '/craftsmanship'
     | '/enquire'
     | '/heritage'
+    | '/admin/login'
     | '/collections/$slug'
     | '/journal/$slug'
     | '/products/$slug'
+    | '/admin/'
     | '/collections/'
     | '/journal/'
+    | '/admin/products/import'
+    | '/admin/categories/'
+    | '/admin/enquiries/'
+    | '/admin/journal/'
+    | '/admin/products/'
+    | '/admin/testimonials/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -166,11 +262,19 @@ export interface RootRouteChildren {
   CraftsmanshipRoute: typeof CraftsmanshipRoute
   EnquireRoute: typeof EnquireRoute
   HeritageRoute: typeof HeritageRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
   JournalSlugRoute: typeof JournalSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   CollectionsIndexRoute: typeof CollectionsIndexRoute
   JournalIndexRoute: typeof JournalIndexRoute
+  AdminProductsImportRoute: typeof AdminProductsImportRoute
+  AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
+  AdminEnquiriesIndexRoute: typeof AdminEnquiriesIndexRoute
+  AdminJournalIndexRoute: typeof AdminJournalIndexRoute
+  AdminProductsIndexRoute: typeof AdminProductsIndexRoute
+  AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -217,6 +321,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HeritageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/collections/': {
       id: '/collections/'
       path: '/collections'
@@ -252,6 +370,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/categories/': {
+      id: '/admin/categories/'
+      path: '/admin/categories'
+      fullPath: '/admin/categories/'
+      preLoaderRoute: typeof AdminCategoriesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/enquiries/': {
+      id: '/admin/enquiries/'
+      path: '/admin/enquiries'
+      fullPath: '/admin/enquiries/'
+      preLoaderRoute: typeof AdminEnquiriesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/journal/': {
+      id: '/admin/journal/'
+      path: '/admin/journal'
+      fullPath: '/admin/journal/'
+      preLoaderRoute: typeof AdminJournalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/products/': {
+      id: '/admin/products/'
+      path: '/admin/products'
+      fullPath: '/admin/products/'
+      preLoaderRoute: typeof AdminProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/products/import': {
+      id: '/admin/products/import'
+      path: '/admin/products/import'
+      fullPath: '/admin/products/import'
+      preLoaderRoute: typeof AdminProductsImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/testimonials/': {
+      id: '/admin/testimonials/'
+      path: '/admin/testimonials'
+      fullPath: '/admin/testimonials/'
+      preLoaderRoute: typeof AdminTestimonialsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -262,11 +422,19 @@ const rootRouteChildren: RootRouteChildren = {
   CraftsmanshipRoute: CraftsmanshipRoute,
   EnquireRoute: EnquireRoute,
   HeritageRoute: HeritageRoute,
+  AdminLoginRoute: AdminLoginRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
   JournalSlugRoute: JournalSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  AdminIndexRoute: AdminIndexRoute,
   CollectionsIndexRoute: CollectionsIndexRoute,
   JournalIndexRoute: JournalIndexRoute,
+  AdminProductsImportRoute: AdminProductsImportRoute,
+  AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
+  AdminEnquiriesIndexRoute: AdminEnquiriesIndexRoute,
+  AdminJournalIndexRoute: AdminJournalIndexRoute,
+  AdminProductsIndexRoute: AdminProductsIndexRoute,
+  AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

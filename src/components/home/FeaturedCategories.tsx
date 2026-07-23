@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
-import { CATEGORIES } from "@/data/categories";
+import type { Category } from "@/types";
 
-export function FeaturedCategories() {
-  const items = CATEGORIES.filter((c) => c.featured).slice(0, 6);
+export function FeaturedCategories({ categories }: { categories: Category[] }) {
+  const items = categories.filter((c) => c.featured).slice(0, 6);
   return (
     <section className="relative bg-[color:var(--parchment)] px-5 sm:px-6 md:px-10 py-14 md:py-24 text-[color:var(--walnut)]">
       <div className="mx-auto max-w-[1680px]">

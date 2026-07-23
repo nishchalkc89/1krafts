@@ -80,16 +80,19 @@
 :root {
   --radius: 0.125rem;
 
-  /* Brand palette — light editorial luxury */
-  --linen: oklch(0.97 0.012 85);       /* primary page ground — warm ivory */
-  --parchment: oklch(0.94 0.018 82);   /* alternating section ground */
-  --sand: oklch(0.90 0.024 80);        /* subtle divider / muted card */
-  --walnut: oklch(0.22 0.02 55);       /* primary dark text */
-  --walnut-soft: oklch(0.36 0.02 55);  /* body text */
-  --brass: oklch(0.62 0.11 72);        /* antique gold accent */
-  --brass-soft: oklch(0.74 0.09 78);
-  --sindoor: oklch(0.48 0.18 30);      /* deep maroon accent */
-  --ember: oklch(0.42 0.08 45);
+  /* Brand palette — light editorial luxury. Deeper, richer pass: walnut
+     reads closer to espresso/ink for stronger contrast, sindoor is more
+     vivid/vermilion (true to its name), brass is a touch warmer. */
+  --linen: oklch(0.975 0.014 78);        /* primary page ground — warm ivory */
+  --parchment: oklch(0.945 0.02 76);     /* alternating section ground */
+  --sand: oklch(0.895 0.028 74);         /* subtle divider / muted card */
+  --walnut: oklch(0.17 0.025 50);        /* primary dark text — deep espresso */
+  --walnut-soft: oklch(0.34 0.025 52);   /* body text */
+  --brass: oklch(0.64 0.13 70);          /* antique gold accent */
+  --brass-soft: oklch(0.76 0.10 76);
+  --sindoor: oklch(0.44 0.21 24);        /* vivid vermilion-maroon — signature accent */
+  --ember: oklch(0.38 0.09 40);
+  --shadow-tint: oklch(0.17 0.025 50 / 0.18);
 
   /* Legacy aliases — kept so existing tokens remain valid */
   --ink: var(--walnut);                 /* dark text on light */
@@ -115,8 +118,8 @@
   --accent-foreground: var(--linen);
   --destructive: oklch(0.55 0.19 28);
   --destructive-foreground: var(--linen);
-  --border: oklch(0.22 0.02 55 / 0.14);
-  --input: oklch(0.22 0.02 55 / 0.16);
+  --border: color-mix(in oklab, var(--walnut) 14%, transparent);
+  --input: color-mix(in oklab, var(--walnut) 16%, transparent);
   --ring: var(--brass);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -129,7 +132,7 @@
   --sidebar-primary-foreground: var(--linen);
   --sidebar-accent: var(--sand);
   --sidebar-accent-foreground: var(--walnut);
-  --sidebar-border: oklch(0.22 0.02 55 / 0.14);
+  --sidebar-border: color-mix(in oklab, var(--walnut) 14%, transparent);
   --sidebar-ring: var(--brass);
 }
 
@@ -357,4 +360,102 @@
   overflow: hidden;
   background: var(--sand);
   box-shadow: 0 40px 80px -40px color-mix(in oklab, var(--walnut) 45%, transparent);
+}
+
+@utility shadow-soft {
+  box-shadow: 0 1px 2px var(--shadow-tint), 0 12px 32px -16px var(--shadow-tint);
+}
+
+@utility shadow-lift {
+  box-shadow: 0 2px 4px var(--shadow-tint), 0 24px 48px -20px var(--shadow-tint);
+}
+
+/* Admin panel — reuses the storefront's own brand tokens so it reads as
+   1KRAFTS, not a generic dashboard template. */
+@utility input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--walnut) 16%, transparent);
+  background: color-mix(in oklab, white 60%, var(--linen));
+  padding: 0.55rem 0.8rem;
+  font-size: 0.875rem;
+  color: var(--walnut);
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  &:focus {
+    border-color: var(--brass);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--brass) 20%, transparent);
+  }
+  &:disabled {
+    background: var(--sand);
+    color: color-mix(in oklab, var(--walnut) 45%, transparent);
+  }
+  &::placeholder {
+    color: color-mix(in oklab, var(--walnut) 40%, transparent);
+  }
+}
+
+@utility admin-card {
+  border-radius: 1.125rem;
+  border: 1px solid color-mix(in oklab, var(--walnut) 9%, transparent);
+  background: color-mix(in oklab, white 75%, var(--linen));
+  box-shadow: 0 1px 2px var(--shadow-tint), 0 10px 24px -18px var(--shadow-tint);
+  transition: box-shadow 250ms ease, transform 250ms ease, border-color 250ms ease;
+}
+
+@utility admin-card-hover {
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--brass) 35%, transparent);
+    box-shadow: 0 2px 4px var(--shadow-tint), 0 20px 40px -20px var(--shadow-tint);
+  }
+}
+
+@utility admin-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.6rem;
+  background: var(--walnut);
+  color: var(--linen);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background-color 200ms ease, transform 150ms ease, box-shadow 200ms ease;
+  box-shadow: 0 1px 2px var(--shadow-tint);
+  &:hover {
+    background: color-mix(in oklab, var(--walnut) 85%, var(--sindoor));
+    box-shadow: 0 10px 20px -10px var(--shadow-tint);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+  &:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+@utility admin-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid color-mix(in oklab, var(--walnut) 16%, transparent);
+  background: transparent;
+  color: var(--walnut);
+  padding: 0.55rem 1.05rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: border-color 200ms ease, background-color 200ms ease, transform 150ms ease;
+  &:hover {
+    border-color: var(--brass);
+    background: color-mix(in oklab, var(--brass) 8%, transparent);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
 }

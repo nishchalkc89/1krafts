@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/motion/Reveal";
-import { TESTIMONIALS } from "@/data/testimonials";
+import type { Testimonial } from "@/types";
 
-export function Testimonials() {
+export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   return (
     <section className="bg-[color:var(--parchment)] text-[color:var(--walnut)] px-5 sm:px-6 md:px-10 py-14 md:py-24">
       <div className="mx-auto max-w-[1680px]">
@@ -18,7 +18,7 @@ export function Testimonials() {
           </div>
         </Reveal>
         <div className="mt-10 md:mt-16 grid gap-x-8 md:gap-x-10 gap-y-10 md:gap-y-14 md:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
+          {testimonials.map((t, i) => (
             <Reveal key={t.id} delay={i * 0.1}>
               <figure className="flex h-full flex-col justify-between border-t border-[color:var(--walnut)]/20 pt-8 md:pt-10">
                 <blockquote className="font-display italic text-xl md:text-[1.65rem] leading-snug text-[color:var(--walnut)]">

@@ -44,7 +44,7 @@ export function Hero() {
           >
             <Link
               to="/collections"
-              className="group relative inline-flex items-center gap-4 rounded-full border border-[color:var(--brass)] bg-[color:var(--brass)] px-7 py-3.5 sm:px-8 sm:py-4 text-[0.68rem] sm:text-[0.7rem] uppercase tracking-[0.28em] sm:tracking-[0.32em] text-[color:var(--linen)] transition-colors hover:bg-transparent hover:text-[color:var(--brass)]"
+              className="group relative inline-flex items-center gap-4 rounded-full border border-[color:var(--brass)] bg-[color:var(--brass)] px-7 py-3.5 sm:px-8 sm:py-4 text-[0.68rem] sm:text-[0.7rem] uppercase tracking-[0.28em] sm:tracking-[0.32em] text-[color:var(--walnut)] shadow-[0_16px_32px_-16px_color-mix(in_oklab,var(--brass)_70%,transparent)] transition-all hover:-translate-y-0.5 hover:bg-transparent hover:text-[color:var(--brass)] hover:shadow-[0_20px_40px_-18px_color-mix(in_oklab,var(--brass)_60%,transparent)]"
             >
               Shop the House
               <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>

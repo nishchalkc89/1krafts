@@ -1,9 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Instagram, Mail, Menu, Phone, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
-import { CATEGORIES } from "@/data/categories";
+import { services } from "@/services";
 import { useSearchOverlay } from "@/context/SearchContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
@@ -27,6 +28,15 @@ export function Header() {
   const isHome = pathname === "/";
   const search = useSearchOverlay();
   const wishlist = useWishlist();
+  const qc = useQueryClient();
+  const { data: CATEGORIES = [] } = useQuery({ queryKey: ["categories"], queryFn: () => services.categories.list() });
+
+  // Header never unmounts between route changes, so its own query never gets a
+  // natural remount-triggered refetch — without this, admin edits to categories
+  // wouldn't show in the nav/mega-menu until a hard reload.
+  useEffect(() => {
+    qc.invalidateQueries({ queryKey: ["categories"] });
+  }, [pathname, qc]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -63,9 +73,9 @@ export function Header() {
     <header
       ref={headerRef}
       className={
-        "fixed inset-x-0 top-0 z-50 transition-[background,backdrop-filter,color,padding] duration-500 " +
+        "fixed inset-x-0 top-0 z-50 transition-[background,backdrop-filter,color,padding,box-shadow] duration-500 " +
         (scrolled || !isHome
-          ? "py-3 backdrop-blur-xl bg-[color:var(--linen)]/90 border-b border-[color:var(--walnut)]/10"
+          ? "py-3 backdrop-blur-xl bg-[color:var(--linen)]/92 shadow-soft"
           : "py-5 md:py-6 bg-gradient-to-b from-[color:var(--linen)]/80 to-transparent")
       }
     >
@@ -97,14 +107,14 @@ export function Header() {
           <div className="flex items-center gap-2">
             <button
               aria-label="Search"
-              className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/25 text-[color:var(--walnut)] hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors"
+              className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/18 text-[color:var(--walnut)] transition-all hover:border-[color:var(--brass)] hover:bg-[color:var(--brass)]/10 hover:text-[color:var(--ember)]"
               onClick={() => search.setOpen(true)}
             >
               <Search size={16} />
             </button>
             <button
               aria-label="Wishlist"
-              className="relative grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/25 text-[color:var(--walnut)] hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors"
+              className="relative grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/18 text-[color:var(--walnut)] transition-all hover:border-[color:var(--brass)] hover:bg-[color:var(--brass)]/10 hover:text-[color:var(--ember)]"
               onClick={() => wishlist.setOpen(true)}
             >
               <Heart size={16} fill={wishlist.count > 0 ? "currentColor" : "none"} />
@@ -116,7 +126,7 @@ export function Header() {
             </button>
             <button
               aria-label="Menu"
-              className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/25 text-[color:var(--walnut)] hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors md:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--walnut)]/18 text-[color:var(--walnut)] transition-all hover:border-[color:var(--brass)] hover:bg-[color:var(--brass)]/10 hover:text-[color:var(--ember)] md:hidden"
               onClick={() => setMenuOpen((v) => !v)}
             >
               {menuOpen ? <X size={16} /> : <Menu size={16} />}
@@ -134,19 +144,30 @@ export function Header() {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onMouseLeave={() => setMegaOpen(false)}
-            className="absolute inset-x-0 top-full hidden md:block bg-[color:var(--linen)]/95 backdrop-blur-xl border-y border-[color:var(--walnut)]/10 text-[color:var(--walnut)]"
+            className="absolute inset-x-0 top-full hidden md:block bg-[color:var(--linen)]/97 backdrop-blur-xl border-y border-[color:var(--walnut)]/10 text-[color:var(--walnut)] shadow-lift"
           >
-            <div className="mx-auto grid max-w-[1680px] grid-cols-4 gap-x-10 gap-y-4 px-10 py-10">
+            <div className="mx-auto grid max-w-[1680px] grid-cols-4 gap-6 px-10 py-8">
               {CATEGORIES.map((c) => (
                 <Link
                   key={c.slug}
                   to="/collections/$slug"
                   params={{ slug: c.slug }}
-                  className="group flex items-baseline justify-between border-b border-transparent hover:border-[color:var(--brass)]/50 py-2 transition-colors"
+                  className="group flex items-center gap-4 rounded-lg p-2 transition-colors hover:bg-[color:var(--walnut)]/4"
                 >
-                  <span className="font-display italic text-xl group-hover:text-[color:var(--brass)] transition-colors">{c.name}</span>
-                  <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--sindoor)] group-hover:text-[color:var(--walnut)]">
-                    {c.tagline}
+                  <span className="h-14 w-14 shrink-0 overflow-hidden rounded-md bg-[color:var(--sand)]">
+                    <img
+                      src={c.image}
+                      alt=""
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-display italic text-lg leading-tight text-[color:var(--walnut)] transition-colors group-hover:text-[color:var(--sindoor)]">
+                      {c.name}
+                    </span>
+                    <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--brass)]">
+                      {c.tagline}
+                    </span>
                   </span>
                 </Link>
               ))}
@@ -190,16 +211,16 @@ export function Header() {
             <div className="mt-8 border-t border-[color:var(--walnut)]/15 pt-6">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--sindoor)] mb-4">Reach us</div>
               <div className="flex items-center gap-3">
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/25 hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors">
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/18 text-[color:var(--walnut)] transition-all hover:border-[color:var(--brass)] hover:bg-[color:var(--brass)]/10 hover:text-[color:var(--ember)]">
                   <Instagram size={16} />
                 </a>
-                <a href="https://wa.me/9779800000000" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/25 hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors">
+                <a href="https://wa.me/9779800000000" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/18 text-[color:var(--walnut)] transition-all hover:border-[color:var(--brass)] hover:bg-[color:var(--brass)]/10 hover:text-[color:var(--ember)]">
                   <MessageIcon />
                 </a>
-                <a href="tel:+9779800000000" aria-label="Call" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/25 hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors">
+                <a href="tel:+9779800000000" aria-label="Call" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/18 text-[color:var(--walnut)] transition-all hover:border-[color:var(--brass)] hover:bg-[color:var(--brass)]/10 hover:text-[color:var(--ember)]">
                   <Phone size={16} />
                 </a>
-                <a href="mailto:atelier@1krafts.com" aria-label="Email" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/25 hover:border-[color:var(--brass)] hover:text-[color:var(--brass)] transition-colors">
+                <a href="mailto:atelier@1krafts.com" aria-label="Email" className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--walnut)]/18 text-[color:var(--walnut)] transition-all hover:border-[color:var(--brass)] hover:bg-[color:var(--brass)]/10 hover:text-[color:var(--ember)]">
                   <Mail size={16} />
                 </a>
               </div>

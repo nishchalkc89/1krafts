@@ -14,9 +14,9 @@ const productsQuery = (slug: string) =>
 
 export const Route = createFileRoute("/collections/$slug")({
   loader: async ({ params, context }) => {
-    const cat = await context.queryClient.ensureQueryData(categoryQuery(params.slug));
+    const cat = await context.queryClient.fetchQuery(categoryQuery(params.slug));
     if (!cat) throw notFound();
-    await context.queryClient.ensureQueryData(productsQuery(params.slug));
+    await context.queryClient.fetchQuery(productsQuery(params.slug));
   },
   head: ({ params }) => ({
     meta: [

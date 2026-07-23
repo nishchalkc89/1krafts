@@ -17,9 +17,9 @@ const relatedQuery = (id: string) =>
 
 export const Route = createFileRoute("/products/$slug")({
   loader: async ({ params, context }) => {
-    const p = await context.queryClient.ensureQueryData(productQuery(params.slug));
+    const p = await context.queryClient.fetchQuery(productQuery(params.slug));
     if (!p) throw notFound();
-    await context.queryClient.ensureQueryData(relatedQuery(p.id));
+    await context.queryClient.fetchQuery(relatedQuery(p.id));
   },
   head: ({ params, loaderData: _l }) => ({
     meta: [

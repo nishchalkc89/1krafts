@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
 import { Divider } from "@/components/brand/Divider";
-import { CATEGORIES } from "@/data/categories";
+import { services } from "@/services";
+
+const categoriesQuery = queryOptions({ queryKey: ["categories"], queryFn: () => services.categories.list() });
 
 export const Route = createFileRoute("/collections/")({
   head: () => ({
@@ -15,10 +18,12 @@ export const Route = createFileRoute("/collections/")({
     ],
     links: [{ rel: "canonical", href: "/collections" }],
   }),
+  loader: ({ context }) => context.queryClient.fetchQuery(categoriesQuery),
   component: CollectionsIndex,
 });
 
 function CollectionsIndex() {
+  const { data: CATEGORIES } = useSuspenseQuery(categoriesQuery);
   return (
     <>
       <section className="pt-40 pb-16 px-6 md:px-10">

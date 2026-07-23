@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { Reveal } from "@/components/motion/Reveal";
 import { Divider } from "@/components/brand/Divider";
-import { JOURNAL } from "@/data/journal";
+import { services } from "@/services";
+
+const journalQuery = queryOptions({ queryKey: ["journal"], queryFn: () => services.journal.list() });
 
 export const Route = createFileRoute("/journal/")({
   head: () => ({
@@ -14,10 +17,12 @@ export const Route = createFileRoute("/journal/")({
     ],
     links: [{ rel: "canonical", href: "/journal" }],
   }),
+  loader: ({ context }) => context.queryClient.fetchQuery(journalQuery),
   component: JournalIndex,
 });
 
 function JournalIndex() {
+  const { data: JOURNAL } = useSuspenseQuery(journalQuery);
   return (
     <>
       <section className="pt-40 pb-16 px-6 md:px-10">

@@ -12,7 +12,7 @@ export function Logo({ className, variant = "mark" }: LogoProps) {
       <img
         src={logo}
         alt="1KRAFTS — Crafted with Tradition"
-        className={variant === "full" ? "h-28 w-auto md:h-40" : "h-24 w-auto md:h-36"}
+        className={variant === "full" ? "h-16 w-auto md:h-20" : "h-12 w-auto md:h-16"}
         draggable={false}
       />
     </Link>

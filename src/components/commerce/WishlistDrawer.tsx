@@ -2,15 +2,23 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Heart, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useWishlist } from "@/context/WishlistContext";
-import { PRODUCTS } from "@/data/products";
+import { services } from "@/services";
 import { formatPrice } from "@/lib/format";
 import { useEscapeKey } from "@/hooks/use-escape-key";
 import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
 
 export function WishlistDrawer() {
   const { open, setOpen, ids, toggle } = useWishlist();
-  const items = PRODUCTS.filter((p) => ids.includes(p.id));
+  // Wishlist stores product ids only — look the full records up from the live
+  // catalog (not the old static mock data, whose ids never match real ones).
+  const { data } = useQuery({
+    queryKey: ["wishlist-products"],
+    queryFn: () => services.products.list({ pageSize: 500 }),
+    enabled: ids.length > 0,
+  });
+  const items = (data?.items ?? []).filter((p) => ids.includes(p.id));
 
   useEscapeKey(open, useCallback(() => setOpen(false), [setOpen]));
   useBodyScrollLock(open);

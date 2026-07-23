@@ -15,12 +15,18 @@ const newArrivalsQuery = () =>
   queryOptions({ queryKey: ["home", "new-arrivals"], queryFn: () => services.products.newArrivals(8) });
 const bestSellersQuery = () =>
   queryOptions({ queryKey: ["home", "best-sellers"], queryFn: () => services.products.bestSellers(4) });
+const categoriesQuery = () =>
+  queryOptions({ queryKey: ["categories"], queryFn: () => services.categories.list() });
+const testimonialsQuery = () =>
+  queryOptions({ queryKey: ["testimonials"], queryFn: () => services.testimonials.list() });
 
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => {
     await Promise.all([
-      context.queryClient.ensureQueryData(newArrivalsQuery()),
-      context.queryClient.ensureQueryData(bestSellersQuery()),
+      context.queryClient.fetchQuery(newArrivalsQuery()),
+      context.queryClient.fetchQuery(bestSellersQuery()),
+      context.queryClient.fetchQuery(categoriesQuery()),
+      context.queryClient.fetchQuery(testimonialsQuery()),
     ]);
   },
   component: Home,
@@ -29,16 +35,18 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { data: newArrivals } = useSuspenseQuery(newArrivalsQuery());
   const { data: bestSellers } = useSuspenseQuery(bestSellersQuery());
+  const { data: categories } = useSuspenseQuery(categoriesQuery());
+  const { data: testimonials } = useSuspenseQuery(testimonialsQuery());
   return (
     <>
       <Hero />
-      <FeaturedCategories />
+      <FeaturedCategories categories={categories} />
       <NewArrivals eyebrow="The Latest" title="New Arrivals" products={newArrivals} />
       <Heritage />
       <NewArrivals eyebrow="Kept by many" title="Best Sellers" products={bestSellers} />
       <Craftsmanship />
       <LimitedCollection />
-      <Testimonials />
+      <Testimonials testimonials={testimonials} />
       <InstagramGrid />
       <Newsletter />
     </>
