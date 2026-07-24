@@ -39,25 +39,35 @@ function stripHtml(html: string): string {
 // Sellers commonly write product specs as a bullet/line list inside the
 // HTML description itself — "Color: Black, Material: Cotton Blend<br>
 // Pattern: Printed, ..." — rather than as structured spreadsheet columns.
-// This pulls the ones we have dedicated fields for out of that free text,
-// so they land in Color/Material/Fabric/Occasion instead of only ever
-// showing up buried inside the description paragraph.
-function extractSpecsFromHtml(html: string): { color: string; material: string; fabric: string; occasion: string } {
+// This pulls the ones we have dedicated fields for out of that free text
+// (so they land in Color/Material/Fabric/Occasion, not just buried in a
+// paragraph) and also returns the description with those matched lines
+// removed, so the same information doesn't sit duplicated in both places.
+function extractSpecsAndCleanDescription(
+  html: string,
+): { color: string; material: string; fabric: string; occasion: string; description: string } {
   const text = cleanMojibake(html).replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, " ");
-  const lines = text.split("\n");
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   const specs = { color: "", material: "", fabric: "", occasion: "" };
+  const kept: string[] = [];
+
   for (const line of lines) {
     const match = line.match(/^[\s•\-*]*([A-Za-z][A-Za-z\s]{2,24}?)\s*:\s*([^<\n]+)/);
-    if (!match) continue;
-    const label = match[1].trim().toLowerCase();
-    const value = match[2].replace(/,\s*$/, "").trim();
-    if (!value) continue;
-    if (!specs.color && (label === "color" || label === "colour")) specs.color = value;
-    else if (!specs.material && /^materia/.test(label)) specs.material = value;
-    else if (!specs.fabric && label === "fabric") specs.fabric = value;
-    else if (!specs.occasion && label === "occasion") specs.occasion = value;
+    if (match) {
+      const label = match[1].trim().toLowerCase();
+      const value = match[2].replace(/,\s*$/, "").trim();
+      if (value) {
+        if (!specs.color && (label === "color" || label === "colour")) { specs.color = value; continue; }
+        if (!specs.material && /^materia/.test(label)) { specs.material = value; continue; }
+        if (!specs.fabric && label === "fabric") { specs.fabric = value; continue; }
+        if (!specs.occasion && label === "occasion") { specs.occasion = value; continue; }
+      }
+    }
+    kept.push(line.replace(/^[\s•\-*]+/, ""));
   }
-  return specs;
+
+  const description = kept.join(" ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/\s+/g, " ").trim();
+  return { ...specs, description };
 }
 
 // Best-effort mapping from Shopify's free-text "Type"/"Product Category" to
@@ -119,8 +129,11 @@ export function shopifyRowsToImportRows(rows: Record<string, unknown>[]): Record
 
     // Option columns (explicit "Color"/"Material" option names) take
     // priority; anything still missing is filled in from the description
-    // text, since most listings state specs there instead.
-    const htmlSpecs = extractSpecsFromHtml(String(primary["Body (HTML)"] ?? ""));
+    // text, since most listings state specs there instead. The matched
+    // lines are also stripped out of the description itself, so specs
+    // don't end up duplicated in both places.
+    const bodyHtml = String(primary["Body (HTML)"] ?? "");
+    const htmlSpecs = extractSpecsAndCleanDescription(bodyHtml);
     color = color || htmlSpecs.color;
     material = material || htmlSpecs.material;
     fabric = fabric || htmlSpecs.fabric || material;
@@ -133,7 +146,7 @@ export function shopifyRowsToImportRows(rows: Record<string, unknown>[]): Record
       categorySlug: guessCategorySlug(String(primary["Type"] ?? ""), String(primary["Product Category"] ?? "")),
       subcategory: "",
       brand: String(primary["Vendor"] ?? "").trim(),
-      description: stripHtml(String(primary["Body (HTML)"] ?? "")) || name,
+      description: htmlSpecs.description || name,
       story: "",
       price: String(primary["Variant Price"] ?? "0").trim(),
       currency: "NPR",
