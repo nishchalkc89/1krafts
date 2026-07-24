@@ -11,6 +11,7 @@ import { categoryAdminService } from "@/services/admin/supabase/categories";
 import { productAdminService } from "@/services/admin/supabase/products";
 import { uploadBulkBatch } from "@/services/admin/supabase/storage";
 import { IMPORT_COLUMNS, importRowSchema, type ImportRow } from "@/services/admin/import-schema";
+import { looksLikeShopifyExport, shopifyRowsToImportRows } from "@/services/admin/shopify-import";
 import type { ProductInput } from "@/services/admin/api";
 
 export const Route = createFileRoute("/admin/products/import")({
@@ -77,6 +78,7 @@ function Content() {
   const [uploadingImages, setUploadingImages] = useState(false);
   const [committing, setCommitting] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [detectedShopify, setDetectedShopify] = useState(false);
 
   const categorySlugSet = new Set(categories.map((c) => c.slug));
 
@@ -115,7 +117,10 @@ function Content() {
     const buf = await file.arrayBuffer();
     const wb = XLSX.read(buf);
     const sheet = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "" });
+    let rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "" });
+    const isShopify = rows.length > 0 && looksLikeShopifyExport(Object.keys(rows[0]));
+    if (isShopify) rows = shopifyRowsToImportRows(rows);
+    setDetectedShopify(isShopify);
     setParsedRows(rows.map((r) => validate(r, imageMap)));
     setResult(null);
   }
@@ -227,6 +232,11 @@ function Content() {
 
       {parsedRows && (
         <div className="mt-10">
+          {detectedShopify && (
+            <p className="mb-4 rounded-lg border border-[color:var(--brass)]/30 bg-[color:var(--brass)]/8 px-4 py-3 text-sm text-[color:var(--walnut)]">
+              Recognized as a Shopify product export — grouped by product and converted automatically. Photos are used directly from their existing links, no upload needed. Categories are guessed from the sheet's "Type"/"Product Category" text; anything that couldn't be matched to one of your categories shows as an error below — fix it by editing the categorySlug in the sheet and re-uploading, or add a matching category first.
+            </p>
+          )}
           <div className="flex items-center justify-between">
             <h2 className="font-display text-lg text-[color:var(--walnut)]">
               Preview — {includedCount} of {parsedRows.length} rows ready to import
