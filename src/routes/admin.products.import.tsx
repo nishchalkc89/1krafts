@@ -39,6 +39,21 @@ interface ParsedRow {
   include: boolean;
 }
 
+// Matches a spreadsheet's "images" cell against the uploaded photo batch.
+// A direct http(s) link is used as-is. Otherwise, matching is forgiving —
+// case-insensitive and extension-tolerant — so a typo like "Photo.JPG" vs
+// "photo.jpg" or "photo.png" doesn't silently drop a product's picture.
+function resolveImage(name: string, images: Map<string, string>): string | undefined {
+  if (/^https?:\/\//i.test(name)) return name;
+  if (images.has(name)) return images.get(name);
+  const stem = (s: string) => s.toLowerCase().replace(/\.[a-z0-9]+$/i, "");
+  const target = stem(name);
+  for (const [filename, url] of images) {
+    if (stem(filename) === target) return url;
+  }
+  return undefined;
+}
+
 function downloadTemplate() {
   const sheet = XLSX.utils.aoa_to_sheet([
     [...IMPORT_COLUMNS],
@@ -76,7 +91,17 @@ function Content() {
 
     const imageWarnings: string[] = [];
     for (const name of [...row.images, ...row.gallery]) {
-      if (!images.has(name)) imageWarnings.push(`Image not found in uploaded batch: "${name}"`);
+      if (!resolveImage(name, images)) imageWarnings.push(`Image not found in uploaded batch: "${name}"`);
+    }
+
+    // A product with zero matched photos renders broken everywhere on the
+    // storefront (product cards assume at least one image exists), so this
+    // must block the row rather than just warn.
+    const hasMatchedImage = row.images.some((name) => resolveImage(name, images) !== undefined);
+    if (row.images.length === 0) {
+      errors.push("No images listed — every product needs at least one photo filename or URL in the images column.");
+    } else if (!hasMatchedImage) {
+      errors.push("None of the listed images were found in the uploaded photo batch — upload them first, or use a direct image URL.");
     }
 
     return { raw, row, errors, imageWarnings, include: errors.length === 0 };
@@ -170,7 +195,7 @@ function Content() {
       {imageMap.size > 0 && (
         <div className="mt-6">
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[color:var(--walnut-soft)]">
-            Uploaded photos — reference these exact file names in the spreadsheet's images/gallery columns
+            Uploaded photos — reference these file names in the spreadsheet's images/gallery columns (matching ignores case and file extension). You can also paste a direct https:// image link instead of uploading a file.
           </p>
           <div className="mt-3 flex flex-wrap gap-3">
             {Array.from(imageMap.entries()).map(([filename, url]) => (
@@ -270,7 +295,10 @@ function Content() {
 
 function rowToProductInput(row: ImportRow, imageMap: Map<string, string>): ProductInput {
   const toImages = (names: string[]) =>
-    names.filter((n) => imageMap.has(n)).map((n) => ({ src: imageMap.get(n)!, alt: row.name }));
+    names
+      .map((n) => resolveImage(n, imageMap))
+      .filter((src): src is string => !!src)
+      .map((src) => ({ src, alt: row.name }));
   return {
     slug: row.slug,
     name: row.name,

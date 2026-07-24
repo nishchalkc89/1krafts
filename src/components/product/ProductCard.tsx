@@ -7,7 +7,8 @@ import { useWishlist } from "@/context/WishlistContext";
 
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const wl = useWishlist();
-  const hoverSrc = product.gallery[1]?.src ?? product.images[0].src;
+  const mainSrc = product.images[0]?.src;
+  const hoverSrc = product.gallery[1]?.src ?? mainSrc;
   const active = wl.has(product.id);
 
   return (
@@ -20,19 +21,23 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
     >
       <Link to="/products/$slug" params={{ slug: product.slug }} className="block">
         <div className="relative aspect-[4/5] overflow-hidden rounded-2xl md:rounded-[1.25rem] bg-[color:var(--sand)] shadow-[0_20px_50px_-30px_color-mix(in_oklab,var(--walnut)_35%,transparent)]">
-          <img
-            src={product.images[0].src}
-            alt={product.name}
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1200ms] ease-out group-hover:opacity-0 group-hover:scale-[1.03]"
-          />
-          <img
-            src={hoverSrc}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,transform] duration-[1200ms] ease-out group-hover:opacity-100 group-hover:scale-[1.06]"
-          />
+          {mainSrc && (
+            <img
+              src={mainSrc}
+              alt={product.name}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1200ms] ease-out group-hover:opacity-0 group-hover:scale-[1.03]"
+            />
+          )}
+          {hoverSrc && (
+            <img
+              src={hoverSrc}
+              alt=""
+              aria-hidden
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,transform] duration-[1200ms] ease-out group-hover:opacity-100 group-hover:scale-[1.06]"
+            />
+          )}
           {/* corner marks */}
           <span className="pointer-events-none absolute top-3 left-3 h-3 w-3 border-t border-l border-[color:var(--brass)]/70 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <span className="pointer-events-none absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[color:var(--brass)]/70 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

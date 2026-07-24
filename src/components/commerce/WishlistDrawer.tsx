@@ -59,7 +59,7 @@ export function WishlistDrawer() {
                 <ul className="divide-y divide-foreground/10">
                   {items.map((p) => (
                     <li key={p.id} className="flex gap-4 py-5">
-                      <img src={p.images[0].src} alt={p.name} className="h-24 w-20 object-cover" />
+                      {p.images[0] && <img src={p.images[0].src} alt={p.name} className="h-24 w-20 object-cover" />}
                       <div className="flex flex-1 flex-col">
                         <Link to="/products/$slug" params={{ slug: p.slug }} onClick={() => setOpen(false)} className="font-display text-lg">
                           {p.name}

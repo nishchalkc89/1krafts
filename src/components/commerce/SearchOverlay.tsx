@@ -80,7 +80,7 @@ export function SearchOverlay() {
                         onClick={() => setOpen(false)}
                         className="group flex gap-4 border-b border-foreground/10 py-4 hover:border-foreground/40"
                       >
-                        <img src={p.images[0].src} alt={p.name} className="h-24 w-20 object-cover" />
+                        {p.images[0] && <img src={p.images[0].src} alt={p.name} className="h-24 w-20 object-cover" />}
                         <div className="flex flex-1 flex-col">
                           <span className="font-display text-xl">{p.name}</span>
                           <span className="text-xs font-semibold text-foreground uppercase tracking-[0.24em]">{p.categorySlug}</span>
