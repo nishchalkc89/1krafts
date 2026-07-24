@@ -9,7 +9,7 @@ export function LimitedCollection() {
       <div className="mx-auto max-w-[1680px] relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] shadow-[0_50px_100px_-40px_color-mix(in_oklab,var(--walnut)_50%,transparent)]">
         <div className="relative min-h-[560px] md:min-h-[720px]">
           <Parallax offset={80} className="absolute inset-0">
-            <img src={wedding} alt="Sagun — the bridal collection" loading="lazy" className="h-full w-full object-cover object-[center_25%]" />
+            <img src={wedding} alt="Sagun — the bridal collection" loading="lazy" className="h-full w-full object-cover object-[center_12%]" />
           </Parallax>
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
           <div className="relative z-10 flex h-full min-h-[560px] md:min-h-[720px] flex-col justify-center px-6 sm:px-10 md:px-16 py-16">

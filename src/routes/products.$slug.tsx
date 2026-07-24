@@ -1,14 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, Heart, Mail, MessageCircle, Phone, Play, Share2 } from "lucide-react";
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Heart, Mail, MessageCircle, Phone, Play, Share2, X, ZoomIn } from "lucide-react";
+import { useRef, useState, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { services } from "@/services";
 import { formatPrice } from "@/lib/format";
 import { useEnquiry } from "@/context/EnquiryContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
+import { useEscapeKey } from "@/hooks/use-escape-key";
 
 const productQuery = (slug: string) =>
   queryOptions({ queryKey: ["product", slug], queryFn: () => services.products.bySlug(slug) });
@@ -38,9 +40,13 @@ function ProductPage() {
   const { data: related } = useSuspenseQuery(relatedQuery(p!.id));
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState<{ x: number; y: number; on: boolean }>({ x: 50, y: 50, on: false });
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
   const { openEnquiry } = useEnquiry();
   const wl = useWishlist();
+
+  useEscapeKey(lightboxOpen, useCallback(() => setLightboxOpen(false), []));
+  useBodyScrollLock(lightboxOpen);
 
   if (!p) return null;
   const baseGallery = (p.gallery.length ? p.gallery : p.images).slice(0, 3);
@@ -108,21 +114,27 @@ function ProductPage() {
                 onMouseEnter={() => current.kind === "image" && setZoom((z) => ({ ...z, on: true }))}
                 onMouseLeave={() => setZoom({ x: 50, y: 50, on: false })}
                 onMouseMove={(e) => current.kind === "image" && onMove(e)}
+                onClick={() => current.kind === "image" && setLightboxOpen(true)}
                 className={
                   "relative aspect-[4/5] overflow-hidden rounded-3xl bg-[color:var(--parchment)] shadow-[0_30px_80px_-40px_color-mix(in_oklab,var(--walnut)_45%,transparent)] " +
                   (current.kind === "image" ? "cursor-zoom-in" : "")
                 }
               >
                 {current.kind === "image" ? (
-                  <img
-                    src={current.src}
-                    alt={p.name}
-                    className="h-full w-full object-cover transition-transform duration-300 ease-out will-change-transform"
-                    style={{
-                      transformOrigin: `${zoom.x}% ${zoom.y}%`,
-                      transform: zoom.on ? "scale(2.1)" : "scale(1)",
-                    }}
-                  />
+                  <>
+                    <img
+                      src={current.src}
+                      alt={p.name}
+                      className="h-full w-full object-cover transition-transform duration-300 ease-out will-change-transform"
+                      style={{
+                        transformOrigin: `${zoom.x}% ${zoom.y}%`,
+                        transform: zoom.on ? "scale(2.1)" : "scale(1)",
+                      }}
+                    />
+                    <span className="md:hidden pointer-events-none absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-white/85 text-[color:var(--walnut)] backdrop-blur-sm shadow-md">
+                      <ZoomIn size={15} />
+                    </span>
+                  </>
                 ) : (
                   <video
                     src={current.src}
@@ -278,6 +290,36 @@ function ProductPage() {
           </div>
         </section>
       )}
+
+      <AnimatePresence>
+        {lightboxOpen && current.kind === "image" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[95] flex items-center justify-center bg-[color:var(--walnut)]/95 backdrop-blur-sm"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <button
+              aria-label="Close"
+              onClick={() => setLightboxOpen(false)}
+              className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10"
+            >
+              <X size={18} />
+            </button>
+            <motion.img
+              initial={{ scale: 0.92 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.96 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              src={current.src}
+              alt={p.name}
+              className="max-h-[88vh] max-w-[92vw] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -300,7 +342,7 @@ function ProductFilm({ poster, title }: { poster: string; title: string }) {
     if (v.paused) { v.play(); setPlaying(true); } else { v.pause(); setPlaying(false); }
   }
   return (
-    <div className="relative aspect-[21/9] overflow-hidden rounded-3xl bg-[color:var(--walnut)] shadow-[0_40px_100px_-40px_color-mix(in_oklab,var(--walnut)_60%,transparent)]">
+    <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-3xl bg-[color:var(--walnut)] shadow-[0_40px_100px_-40px_color-mix(in_oklab,var(--walnut)_60%,transparent)]">
       <video
         ref={ref}
         poster={poster}
@@ -313,19 +355,19 @@ function ProductFilm({ poster, title }: { poster: string; title: string }) {
       >
         <source src="https://cdn.coverr.co/videos/coverr-a-fashion-model-in-a-flowing-dress-2633/1080p.mp4" type="video/mp4" />
       </video>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[color:var(--walnut)]/60 via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[color:var(--walnut)]/80 via-[color:var(--walnut)]/25 to-[color:var(--walnut)]/15" />
       <button
         onClick={toggle}
         aria-label={playing ? "Pause film" : "Play film"}
-        className="group absolute inset-0 grid place-items-center"
+        className="group absolute inset-0 grid place-items-center pb-16 md:pb-0"
       >
-        <span className={"grid h-20 w-20 md:h-24 md:w-24 place-items-center rounded-full border border-[color:var(--ivory)]/70 bg-[color:var(--ivory)]/10 backdrop-blur-md text-[color:var(--ivory)] transition-transform group-hover:scale-110 " + (playing ? "opacity-0" : "opacity-100")}>
+        <span className={"grid h-16 w-16 md:h-24 md:w-24 place-items-center rounded-full border border-[color:var(--ivory)]/70 bg-[color:var(--ivory)]/10 backdrop-blur-md text-[color:var(--ivory)] transition-transform group-hover:scale-110 " + (playing ? "opacity-0" : "opacity-100")}>
           <Play size={26} className="translate-x-0.5" fill="currentColor" />
         </span>
       </button>
-      <div className="pointer-events-none absolute bottom-6 left-6 md:bottom-8 md:left-10">
+      <div className="pointer-events-none absolute inset-x-6 bottom-6 md:inset-x-10 md:bottom-8">
         <div className="eyebrow text-[color:var(--ivory)]">Atelier Film · 00:42</div>
-        <div className="mt-2 font-display italic text-2xl md:text-3xl text-[color:var(--ivory)]">{title}</div>
+        <div className="mt-2 font-display italic text-xl md:text-3xl text-[color:var(--ivory)]">{title}</div>
       </div>
     </div>
   );

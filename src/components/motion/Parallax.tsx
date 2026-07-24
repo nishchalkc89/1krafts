@@ -14,7 +14,9 @@ export function Parallax({ children, offset = 80, className }: ParallaxProps) {
   const y = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
   return (
     <div ref={ref} className={className}>
-      <motion.div style={reduce ? undefined : { y }}>{children}</motion.div>
+      <motion.div className="h-full w-full" style={reduce ? undefined : { y }}>
+        {children}
+      </motion.div>
     </div>
   );
 }
