@@ -12,12 +12,14 @@ import { mockCategoryService } from "./mock/categories";
 import { mockEnquiryService } from "./mock/enquiries";
 import { mockTestimonialService } from "./mock/testimonials";
 import { mockJournalService } from "./mock/journal";
+import { mockNewsletterService } from "./mock/newsletter";
 
 import { supabaseProductService } from "./supabase/products";
 import { supabaseCategoryService } from "./supabase/categories";
 import { supabaseEnquiryService } from "./supabase/enquiries";
 import { supabaseTestimonialService } from "./supabase/testimonials";
 import { supabaseJournalService } from "./supabase/journal";
+import { supabaseNewsletterService } from "./supabase/newsletter";
 
 export const services: Services = hasSupabaseConfig
   ? {
@@ -26,6 +28,7 @@ export const services: Services = hasSupabaseConfig
       enquiries: supabaseEnquiryService,
       testimonials: supabaseTestimonialService,
       journal: supabaseJournalService,
+      newsletter: supabaseNewsletterService,
     }
   : {
       products: mockProductService,
@@ -33,6 +36,7 @@ export const services: Services = hasSupabaseConfig
       enquiries: mockEnquiryService,
       testimonials: mockTestimonialService,
       journal: mockJournalService,
+      newsletter: mockNewsletterService,
     };
 
 export type { Services } from "./api";

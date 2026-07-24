@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { LayoutGrid, LogOut, Menu, MessageSquare, Newspaper, Package, Quote, Upload, X } from "lucide-react";
+import { LayoutGrid, LogOut, Mail, Menu, MessageSquare, Newspaper, Package, Quote, Upload, X } from "lucide-react";
 import { supabase } from "@/services/supabase/client";
 import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
 import logo from "@/assets/1krafts-logo-transparent.png";
@@ -13,6 +13,7 @@ const NAV = [
   { to: "/admin/journal", label: "Journal", icon: Newspaper },
   { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
   { to: "/admin/enquiries", label: "Enquiries", icon: MessageSquare },
+  { to: "/admin/newsletter", label: "Newsletter", icon: Mail },
 ] as const;
 
 export function AdminShell({ children }: { children: ReactNode }) {

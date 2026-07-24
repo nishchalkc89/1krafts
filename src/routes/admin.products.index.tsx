@@ -222,7 +222,7 @@ function ProductForm({
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Field label="Price">
-          <input type="number" required value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} className="input" />
+          <input type="number" required value={form.price} onFocus={(e) => e.target.select()} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} className="input" />
         </Field>
         <Field label="Currency">
           <select value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value as Currency })} className="input">
@@ -230,10 +230,10 @@ function ProductForm({
           </select>
         </Field>
         <Field label="Stock">
-          <input type="number" required value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} className="input" />
+          <input type="number" required value={form.stock} onFocus={(e) => e.target.select()} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} className="input" />
         </Field>
         <Field label="Discount">
-          <input type="number" value={form.discount ?? 0} onChange={(e) => setForm({ ...form, discount: Number(e.target.value) })} className="input" />
+          <input type="number" value={form.discount ?? 0} onFocus={(e) => e.target.select()} onChange={(e) => setForm({ ...form, discount: Number(e.target.value) })} className="input" />
         </Field>
       </div>
 

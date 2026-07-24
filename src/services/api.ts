@@ -28,6 +28,10 @@ export interface EnquiryService {
   create(input: EnquiryInput): Promise<{ id: string }>;
 }
 
+export interface NewsletterService {
+  subscribe(email: string): Promise<{ id: string }>;
+}
+
 export interface TestimonialService {
   list(): Promise<Testimonial[]>;
 }
@@ -43,4 +47,5 @@ export interface Services {
   enquiries: EnquiryService;
   testimonials: TestimonialService;
   journal: JournalService;
+  newsletter: NewsletterService;
 }

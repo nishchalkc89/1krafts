@@ -176,6 +176,7 @@ function CategoryForm({ initial, onDone }: { initial: Category | null; onDone: (
             type="number"
             required
             value={form.order}
+            onFocus={(e) => e.target.select()}
             onChange={(e) => setForm({ ...form, order: Number(e.target.value) })}
             className="input"
           />

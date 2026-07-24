@@ -156,6 +156,7 @@ function TestimonialForm({ initial, onDone }: { initial: Testimonial | null; onD
           max={5}
           required
           value={form.rating}
+          onFocus={(e) => e.target.select()}
           onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })}
           className="input"
         />

@@ -25,6 +25,7 @@ import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin.categories.index'
 import { Route as AdminEnquiriesIndexRouteImport } from './routes/admin.enquiries.index'
 import { Route as AdminJournalIndexRouteImport } from './routes/admin.journal.index'
+import { Route as AdminNewsletterIndexRouteImport } from './routes/admin.newsletter.index'
 import { Route as AdminProductsIndexRouteImport } from './routes/admin.products.index'
 import { Route as AdminProductsImportRouteImport } from './routes/admin.products.import'
 import { Route as AdminTestimonialsIndexRouteImport } from './routes/admin.testimonials.index'
@@ -109,6 +110,11 @@ const AdminJournalIndexRoute = AdminJournalIndexRouteImport.update({
   path: '/admin/journal/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminNewsletterIndexRoute = AdminNewsletterIndexRouteImport.update({
+  id: '/admin/newsletter/',
+  path: '/admin/newsletter/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProductsIndexRoute = AdminProductsIndexRouteImport.update({
   id: '/admin/products/',
   path: '/admin/products/',
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/admin/categories/': typeof AdminCategoriesIndexRoute
   '/admin/enquiries/': typeof AdminEnquiriesIndexRoute
   '/admin/journal/': typeof AdminJournalIndexRoute
+  '/admin/newsletter/': typeof AdminNewsletterIndexRoute
   '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
 }
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AdminCategoriesIndexRoute
   '/admin/enquiries': typeof AdminEnquiriesIndexRoute
   '/admin/journal': typeof AdminJournalIndexRoute
+  '/admin/newsletter': typeof AdminNewsletterIndexRoute
   '/admin/products': typeof AdminProductsIndexRoute
   '/admin/testimonials': typeof AdminTestimonialsIndexRoute
 }
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/admin/categories/': typeof AdminCategoriesIndexRoute
   '/admin/enquiries/': typeof AdminEnquiriesIndexRoute
   '/admin/journal/': typeof AdminJournalIndexRoute
+  '/admin/newsletter/': typeof AdminNewsletterIndexRoute
   '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
 }
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/admin/categories/'
     | '/admin/enquiries/'
     | '/admin/journal/'
+    | '/admin/newsletter/'
     | '/admin/products/'
     | '/admin/testimonials/'
   fileRoutesByTo: FileRoutesByTo
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/enquiries'
     | '/admin/journal'
+    | '/admin/newsletter'
     | '/admin/products'
     | '/admin/testimonials'
   id:
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/admin/categories/'
     | '/admin/enquiries/'
     | '/admin/journal/'
+    | '/admin/newsletter/'
     | '/admin/products/'
     | '/admin/testimonials/'
   fileRoutesById: FileRoutesById
@@ -273,6 +285,7 @@ export interface RootRouteChildren {
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
   AdminEnquiriesIndexRoute: typeof AdminEnquiriesIndexRoute
   AdminJournalIndexRoute: typeof AdminJournalIndexRoute
+  AdminNewsletterIndexRoute: typeof AdminNewsletterIndexRoute
   AdminProductsIndexRoute: typeof AdminProductsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
 }
@@ -391,6 +404,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminJournalIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/newsletter/': {
+      id: '/admin/newsletter/'
+      path: '/admin/newsletter'
+      fullPath: '/admin/newsletter/'
+      preLoaderRoute: typeof AdminNewsletterIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/products/': {
       id: '/admin/products/'
       path: '/admin/products'
@@ -433,6 +453,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
   AdminEnquiriesIndexRoute: AdminEnquiriesIndexRoute,
   AdminJournalIndexRoute: AdminJournalIndexRoute,
+  AdminNewsletterIndexRoute: AdminNewsletterIndexRoute,
   AdminProductsIndexRoute: AdminProductsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
 }

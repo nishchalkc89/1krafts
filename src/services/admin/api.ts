@@ -48,3 +48,13 @@ export interface EnquiryAdminService {
   updateStatus(id: string, status: EnquiryStatus): Promise<void>;
   remove(id: string): Promise<void>;
 }
+
+export interface NewsletterSubscriber {
+  id: string;
+  email: string;
+  createdAt: string;
+}
+export interface NewsletterAdminService {
+  list(): Promise<NewsletterSubscriber[]>;
+  remove(id: string): Promise<void>;
+}
