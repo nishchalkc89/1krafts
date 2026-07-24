@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/motion/Reveal";
 import { ProductCard } from "@/components/product/ProductCard";
 import type { Product } from "@/types";
@@ -27,6 +28,15 @@ export function NewArrivals({ title = "New Arrivals", eyebrow = "The Latest", pr
           {products.map((p, i) => (
             <ProductCard key={p.id} product={p} index={i} />
           ))}
+        </div>
+        <div className="mt-12 md:mt-20 flex justify-center">
+          <Link
+            to="/collections/all"
+            className="group inline-flex items-center gap-4 rounded-full border border-[color:var(--walnut)]/25 px-7 py-3.5 sm:px-8 sm:py-4 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[color:var(--walnut)] transition-colors hover:border-[color:var(--brass)] hover:text-[color:var(--brass)]"
+          >
+            Explore all products
+            <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+          </Link>
         </div>
       </div>
     </section>

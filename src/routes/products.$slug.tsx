@@ -342,7 +342,7 @@ function ProductFilm({ poster, title }: { poster: string; title: string }) {
     if (v.paused) { v.play(); setPlaying(true); } else { v.pause(); setPlaying(false); }
   }
   return (
-    <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-3xl bg-[color:var(--walnut)] shadow-[0_40px_100px_-40px_color-mix(in_oklab,var(--walnut)_60%,transparent)]">
+    <div className="relative aspect-[4/5] sm:aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-3xl bg-[color:var(--walnut)] shadow-[0_40px_100px_-40px_color-mix(in_oklab,var(--walnut)_60%,transparent)]">
       <video
         ref={ref}
         poster={poster}

@@ -19,6 +19,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as CollectionsIndexRouteImport } from './routes/collections.index'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
+import { Route as CollectionsAllRouteImport } from './routes/collections.all'
 import { Route as JournalIndexRouteImport } from './routes/journal.index'
 import { Route as JournalSlugRouteImport } from './routes/journal.$slug'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
@@ -78,6 +79,11 @@ const CollectionsIndexRoute = CollectionsIndexRouteImport.update({
 const CollectionsSlugRoute = CollectionsSlugRouteImport.update({
   id: '/collections/$slug',
   path: '/collections/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollectionsAllRoute = CollectionsAllRouteImport.update({
+  id: '/collections/all',
+  path: '/collections/all',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JournalIndexRoute = JournalIndexRouteImport.update({
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/heritage': typeof HeritageRoute
   '/admin/login': typeof AdminLoginRoute
   '/collections/$slug': typeof CollectionsSlugRoute
+  '/collections/all': typeof CollectionsAllRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/heritage': typeof HeritageRoute
   '/admin/login': typeof AdminLoginRoute
   '/collections/$slug': typeof CollectionsSlugRoute
+  '/collections/all': typeof CollectionsAllRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin': typeof AdminIndexRoute
@@ -185,6 +193,7 @@ export interface FileRoutesById {
   '/heritage': typeof HeritageRoute
   '/admin/login': typeof AdminLoginRoute
   '/collections/$slug': typeof CollectionsSlugRoute
+  '/collections/all': typeof CollectionsAllRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/heritage'
     | '/admin/login'
     | '/collections/$slug'
+    | '/collections/all'
     | '/journal/$slug'
     | '/products/$slug'
     | '/admin/'
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/heritage'
     | '/admin/login'
     | '/collections/$slug'
+    | '/collections/all'
     | '/journal/$slug'
     | '/products/$slug'
     | '/admin'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/heritage'
     | '/admin/login'
     | '/collections/$slug'
+    | '/collections/all'
     | '/journal/$slug'
     | '/products/$slug'
     | '/admin/'
@@ -276,6 +288,7 @@ export interface RootRouteChildren {
   HeritageRoute: typeof HeritageRoute
   AdminLoginRoute: typeof AdminLoginRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
+  CollectionsAllRoute: typeof CollectionsAllRoute
   JournalSlugRoute: typeof JournalSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -362,6 +375,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/collections/all': {
+      id: '/collections/all'
+      path: '/collections/all'
+      fullPath: '/collections/all'
+      preLoaderRoute: typeof CollectionsAllRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/journal/': {
       id: '/journal/'
       path: '/journal'
@@ -444,6 +464,7 @@ const rootRouteChildren: RootRouteChildren = {
   HeritageRoute: HeritageRoute,
   AdminLoginRoute: AdminLoginRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
+  CollectionsAllRoute: CollectionsAllRoute,
   JournalSlugRoute: JournalSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
