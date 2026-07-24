@@ -88,7 +88,7 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--sindoor)]">
             <button
               onMouseEnter={() => setMegaOpen(true)}
-              className="gold-underline hover:text-[color:var(--brass)]"
+              className="uppercase gold-underline hover:text-[color:var(--brass)]"
             >
               Collections
             </button>
