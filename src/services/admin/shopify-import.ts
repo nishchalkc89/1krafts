@@ -36,38 +36,55 @@ function stripHtml(html: string): string {
     .trim();
 }
 
+// Generic marketplace boilerplate that carries no real product information —
+// dropped outright rather than kept as a "spec" or left in the description.
+function isBoilerplateLabel(label: string): boolean {
+  return label === "disclaimer";
+}
+
 // Sellers commonly write product specs as a bullet/line list inside the
 // HTML description itself — "Color: Black, Material: Cotton Blend<br>
-// Pattern: Printed, ..." — rather than as structured spreadsheet columns.
-// This pulls the ones we have dedicated fields for out of that free text
-// (so they land in Color/Material/Fabric/Occasion, not just buried in a
-// paragraph) and also returns the description with those matched lines
-// removed, so the same information doesn't sit duplicated in both places.
-function extractSpecsAndCleanDescription(
-  html: string,
-): { color: string; material: string; fabric: string; occasion: string; description: string } {
+// Pattern: Printed, Neck Type: Round Neck, ..." — rather than as structured
+// spreadsheet columns. This pulls the ones we have dedicated fields for out
+// of that free text (Color/Material/Fabric/Occasion); anything else labeled
+// (Pattern, Neck Type, Sleeve Type, ...) becomes a proper specification row,
+// matching how hand-entered products already show their details, instead of
+// sitting as raw "Label: Value" fragments in the description paragraph.
+function extractSpecsAndCleanDescription(html: string): {
+  color: string;
+  material: string;
+  fabric: string;
+  occasion: string;
+  description: string;
+  specifications: { label: string; value: string }[];
+} {
   const text = cleanMojibake(html).replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, " ");
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   const specs = { color: "", material: "", fabric: "", occasion: "" };
+  const specifications: { label: string; value: string }[] = [];
   const kept: string[] = [];
 
   for (const line of lines) {
     const match = line.match(/^[\s•\-*]*([A-Za-z][A-Za-z\s]{2,24}?)\s*:\s*([^<\n]+)/);
     if (match) {
-      const label = match[1].trim().toLowerCase();
+      const rawLabel = match[1].trim();
+      const label = rawLabel.toLowerCase();
       const value = match[2].replace(/,\s*$/, "").trim();
       if (value) {
+        if (isBoilerplateLabel(label)) continue;
         if (!specs.color && (label === "color" || label === "colour")) { specs.color = value; continue; }
         if (!specs.material && /^materia/.test(label)) { specs.material = value; continue; }
         if (!specs.fabric && label === "fabric") { specs.fabric = value; continue; }
         if (!specs.occasion && label === "occasion") { specs.occasion = value; continue; }
+        specifications.push({ label: rawLabel, value });
+        continue;
       }
     }
     kept.push(line.replace(/^[\s•\-*]+/, ""));
   }
 
   const description = kept.join(" ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/\s+/g, " ").trim();
-  return { ...specs, description };
+  return { ...specs, description, specifications };
 }
 
 // Best-effort mapping from Shopify's free-text "Type"/"Product Category" to
@@ -164,6 +181,7 @@ export function shopifyRowsToImportRows(rows: Record<string, unknown>[]): Record
       seoDescription: stripHtml(String(primary["SEO Description"] ?? "")),
       images: imageList,
       gallery: imageList,
+      specifications: htmlSpecs.specifications.map((s) => `${s.label}: ${s.value}`).join(" | "),
     });
   }
   return out;

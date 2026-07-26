@@ -26,6 +26,7 @@ export const IMPORT_COLUMNS = [
   "seoDescription",
   "images",
   "gallery",
+  "specifications",
 ] as const;
 
 const CURRENCIES: Currency[] = ["NPR", "USD", "INR"];
@@ -34,6 +35,23 @@ const BADGES: ProductBadge[] = ["new", "bestseller", "limited", "wedding", "fest
 function splitList(v: unknown): string[] {
   if (v == null || v === "") return [];
   return String(v).split(",").map((s) => s.trim()).filter(Boolean);
+}
+
+// "Fabric: Katan silk | Length: 6.3 metres | Care: Dry clean only" ->
+// [{label:"Fabric", value:"Katan silk"}, ...] — matches how the single
+// product admin form's spec rows work, just serialized into one cell.
+function parseSpecifications(v: unknown): { label: string; value: string }[] {
+  if (v == null || v === "") return [];
+  return String(v)
+    .split("|")
+    .map((chunk) => chunk.trim())
+    .filter(Boolean)
+    .map((chunk) => {
+      const idx = chunk.indexOf(":");
+      if (idx === -1) return { label: chunk, value: "" };
+      return { label: chunk.slice(0, idx).trim(), value: chunk.slice(idx + 1).trim() };
+    })
+    .filter((s) => s.label);
 }
 
 export const importRowSchema = z
@@ -71,6 +89,7 @@ export const importRowSchema = z
     seoDescription: z.union([z.string(), z.number()]).optional().transform((v) => (v == null ? "" : String(v).trim())),
     images: z.any().transform(splitList),
     gallery: z.any().transform(splitList),
+    specifications: z.any().transform(parseSpecifications),
   })
   .transform((row) => ({
     ...row,

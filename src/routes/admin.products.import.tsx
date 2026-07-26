@@ -63,6 +63,7 @@ function downloadTemplate() {
       "A short description of the piece.", "", "9800", "NPR", "0", "5",
       "Cotton", "Everyday", "", "", "Indigo", "Cotton", "saree, cotton", "new",
       "", "", "example-photo-1.jpg, example-photo-2.jpg", "",
+      "Length: 5.5 metres | Care: Dry clean only",
     ],
   ]);
   const wb = XLSX.utils.book_new();
@@ -318,7 +319,7 @@ function rowToProductInput(row: ImportRow, imageMap: Map<string, string>): Produ
     brand: row.brand,
     description: row.description,
     story: row.story || undefined,
-    specifications: [],
+    specifications: row.specifications,
     images: toImages(row.images),
     gallery: toImages(row.gallery),
     price: row.price,
