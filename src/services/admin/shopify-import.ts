@@ -154,7 +154,9 @@ export function shopifyRowsToImportRows(rows: Record<string, unknown>[]): Record
     color = color || htmlSpecs.color;
     material = material || htmlSpecs.material;
     fabric = fabric || htmlSpecs.fabric || material;
-    occasion = occasion || htmlSpecs.occasion;
+    // Most listings never state an occasion at all — default to "Everyday"
+    // rather than leaving the field blank on the product page.
+    occasion = occasion || htmlSpecs.occasion || "Everyday";
 
     out.push({
       sku: String(primary["Variant SKU"] ?? "").trim() || handle,
